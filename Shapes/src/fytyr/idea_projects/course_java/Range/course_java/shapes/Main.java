@@ -1,4 +1,4 @@
-package fytyr.IdeaProjects.Course_Java.Shapes;
+package fytyr.idea_projects.course_java.Range.course_java.shapes;
 
 public class Main {
     public static void main(String[] args) {
