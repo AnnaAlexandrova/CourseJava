@@ -1,239 +1,145 @@
 package fytyr.idea_projects.course_java.Range;
 
-import java.util.Scanner;
-
 public class Range {
     private double from;
     private double to;
-    private static final double EPSILON = 1.0e-10;
 
-    private Range(double from, double to) {
+    public Range(double from, double to) {
         this.from = from;
         this.to = to;
     }
 
-    private double getFrom() {
+    public double getFrom() {
         return from;
     }
 
-    private void setFrom(double from) {
+    public void setFrom(double from) {
         this.from = from;
     }
 
-    private double getTo() {
+    public double getTo() {
         return to;
     }
 
-    private void setTo(double to) {
+    public void setTo(double to) {
         this.to = to;
     }
 
-    private double getLength() {
+    public double getLength() {
         return to - from;
     }
 
-    private boolean isInside(double x) {
+    public boolean isInside(double x) {
         boolean isInside = false;
-        if ((x - from >= -EPSILON) && (to - x >= -EPSILON)) {
+        if ((from <= x) && (x <= to)) {
             isInside = true;
         }
         return isInside;
     }
 
-    private double getIntervalLength(double number1, double number2) {
-        if (Math.abs(number1 - number2) <= EPSILON) {
-            return 0;
-        } else if (number2 - number1 > EPSILON) {
-            return number2 - number1;
-        }
-        return number1 - number2;
-    }
-
-    private boolean isIntersect(Range range1, Range range2) {
-        double from1 = range1.getFrom();
-        double to1 = range1.getTo();
-        double from2 = range2.getFrom();
-        double to2 = range2.getTo();
+    public boolean isIntersect(Range newRrange) {
+        double newFrom = newRrange.getFrom();
+        double newTo = newRrange.getTo();
 
         boolean isIntersect = false;
 
-        if ((from1 > from2) && (from1 <= to2)) {
+        if ((from > newFrom) && (from <= newTo)) {
             isIntersect = true;
-        } else if ((from1 <= from2) && (from2 <= to1)) {
+        } else if ((from <= newFrom) && (newFrom <= to)) {
             isIntersect = true;
         }
         return isIntersect;
     }
 
-    private Range getIntervalIntersection(Range range1, Range range2) {
-        double from1 = range1.getFrom();
-        double to1 = range1.getTo();
-        double from2 = range2.getFrom();
-        double to2 = range2.getTo();
+    public Range getRangeIntersection(Range newRange) {
+        double newFrom = newRange.getFrom();
+        double newTo = newRange.getTo();
+        double inFrom = from;
+        double inTo = to;
 
-        Range resultRange = new Range(0, 0);
+        Range resultRange = new Range(inFrom, inTo);
 
-        if (!isIntersect(range1, range2)) {
+        if (!isIntersect(newRange)) {
             return null;
-        } else {
-            if (from1 < from2) {
-                if (to2 < to1) {
-                    resultRange.setFrom(from2);
-                    resultRange.setTo(to2);
-                } else {
-                    resultRange.setFrom(from2);
-                    resultRange.setTo(to1);
-                }
-            } else {
-                if (to1 < to2) {
-                    resultRange.setFrom(from1);
-                    resultRange.setTo(to1);
-                } else {
-                    resultRange.setFrom(from1);
-                    resultRange.setTo(to2);
-                }
-            }
         }
+
+        inFrom = (newFrom > from) ? newFrom : inFrom;
+
+        if (from < newFrom) {
+            inTo = (newTo > to) ? inTo : newTo;
+        } else {
+            inTo = (newTo > to) ? newTo : inTo;
+        }
+
+        resultRange.setFrom(inFrom);
+        resultRange.setTo(inTo);
+
         return resultRange;
     }
 
-    private Range[] getIntervalMerger(Range range1, Range range2) {
-        double from1 = range1.getFrom();
-        double to1 = range1.getTo();
-        double from2 = range2.getFrom();
-        double to2 = range2.getTo();
+    public Range[] getRangeMerger(Range newRange) {
+        double newFrom = newRange.getFrom();
+        double newTo = newRange.getTo();
+        double mergeFrom = from;
+        double mergeTo = to;
 
-        if (isIntersect(range1, range2)) {
-            Range range = new Range(0, 0);
-            Range[] mergeRange = {range};
+        Range rangeMerger = new Range(mergeFrom, mergeTo);
 
-            if (from1 < from2) {
-                if (to2 < to1) {
-                    range.setFrom(from1);
-                    range.setTo(to1);
-                } else {
-                    range.setFrom(from1);
-                    range.setTo(to2);
-                }
-            } else {
-                if (to1 < to2) {
-                    range.setFrom(from2);
-                    range.setTo(to2);
-                } else {
-                    range.setFrom(from2);
-                    range.setTo(to1);
-                }
-            }
+        if (isIntersect(newRange)) {
+            Range[] mergeRange = {rangeMerger};
+
+            mergeFrom = (from > newFrom) ? newFrom : mergeFrom;
+            mergeTo = (to > newTo) ? mergeTo : newTo;
+
+            rangeMerger.setFrom(mergeFrom);
+            rangeMerger.setTo(mergeTo);
+
             return mergeRange;
         }
 
         Range[] mergeRange = new Range[2];
 
-        if (from1 < from2) {
-            mergeRange[0] = range1;
-            mergeRange[1] = range2;
+        if (from < newFrom) {
+            mergeRange[0] = rangeMerger;
+            mergeRange[1] = newRange;
         } else {
-            mergeRange[0] = range2;
-            mergeRange[1] = range1;
+            mergeRange[0] = newRange;
+            mergeRange[1] = rangeMerger;
         }
         return mergeRange;
     }
 
-    private Range[] getIntervalDifference(Range range1, Range range2) {
-        double from1 = range1.getFrom();
-        double to1 = range1.getTo();
-        double from2 = range2.getFrom();
-        double to2 = range2.getTo();
+    public Range[] getRangeDifference(Range newRange) {
+        double newFrom = newRange.getFrom();
+        double newTo = newRange.getTo();
+        double differFrom = from;
+        double differTo = to;
 
-        Range result = new Range(0, 0);
-        Range[] differRange = {result};
+        Range rangeDiffer = new Range(differFrom, differTo);
 
+        Range[] differRange = {rangeDiffer};
         Range[] differRange2 = new Range[2];
+        Range[] differRange3 = new Range[0];
 
-        if (!isIntersect(range1, range2)) {
-            differRange[0] = range1;
-        } else {
-            if (from1 < from2) {
-                if (to2 < to1) {
+        if (!isIntersect(newRange)) {
+            return differRange;
+        }
 
-                    differRange2[0] = new Range(from1, from2);
-                    differRange2[1] = new Range(to2, to1);
+        if (from < newFrom) {
+            if (to > newTo) {
+                differRange2[0] = new Range(from, newFrom);
+                differRange2[1] = new Range(newTo, to);
 
-                    return differRange2;
-                } else {
-                    result.setFrom(from1);
-                    result.setTo(from2);
-                }
+                return differRange2;
             } else {
-                if (to2 < to1) {
-                    result.setFrom(to2);
-                    result.setTo(to1);
-                } else {
-                    return null;
-                }
+                rangeDiffer.setTo(newFrom);
             }
+        } else if ((from > newFrom) && (newTo < to)) {
+            rangeDiffer.setFrom(newTo);
+        } else {
+            System.out.println("Интервалы равны друг другу или уменьшаемый интервал полностью входит в вычитаемый");
+            return differRange3;
         }
         return differRange;
-    }
-
-    public static void main(String[] args) {
-        Range range = new Range(-50, 25.5);
-        System.out.println("Диапазон находится от " + range.getFrom() + " до " + range.getTo());
-
-        double length = range.getLength();
-        System.out.println("Длина диапазона составляет: " + length);
-        System.out.println();
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите число");
-        double userNumber = scanner.nextDouble();
-
-        if (range.isInside(userNumber)) {
-            System.out.println("Данное число входит в диапазон");
-        } else {
-            System.out.println("Данное число не входит в диапазон");
-        }
-        System.out.println();
-
-        double x = 25.5;
-        double y = -50;
-        System.out.println("Длина интервала  = " + range.getIntervalLength(x, y));
-        System.out.println();
-
-        Range range1 = new Range(4, 10);
-        Range range2 = new Range(5, 7);
-
-        try {
-            Range rangeIn = range1.getIntervalIntersection(range1, range2);
-
-            assert rangeIn != null;
-            System.out.println("Пересечение интервалов : " + rangeIn.getFrom() + ", " + rangeIn.getTo());
-
-        } catch (NullPointerException e) {
-            System.out.println("Интервалы не пересекаются");
-        }
-        System.out.println();
-
-        Range[] mergeRange = range1.getIntervalMerger(range1, range2);
-
-        System.out.println("Объединение двух интервалов : ");
-
-        for (Range e : mergeRange) {
-            System.out.println(e.getFrom() + ", " + e.getTo());
-        }
-        System.out.println();
-
-        try {
-            Range[] rangeDifference = range1.getIntervalDifference(range1, range2);
-
-            System.out.println("Разность двух интервалов : ");
-
-            assert rangeDifference != null;
-            for (Range e : rangeDifference) {
-                System.out.println(e.getFrom() + ", " + e.getTo());
-            }
-        } catch (NullPointerException e) {
-            System.out.println("Интервалы равны или уменьшаемый интервал полностью входит в вычитаемый ");
-        }
     }
 }
