@@ -24,10 +24,10 @@ public class RangeMain {
         }
         System.out.println();
 
-        Range newRange = new Range(-40, 25.5);
+        Range newRange = new Range(-70, 10);
 
         try {
-            Range rangeIn = range.getRangeIntersection(newRange);
+            Range rangeIn = range.getIntersection(newRange);
 
             assert rangeIn != null;
             System.out.println("Пересечение интервалов : " + rangeIn.getFrom() + ", " + rangeIn.getTo());
@@ -37,20 +37,20 @@ public class RangeMain {
         }
         System.out.println();
 
-        Range[] mergeRange = range.getRangeMerger(newRange);
+        Range[] merger = range.getMerger(newRange);
 
         System.out.println("Объединение двух интервалов : ");
 
-        for (Range e : mergeRange) {
+        for (Range e : merger) {
             System.out.println(e.getFrom() + ", " + e.getTo());
         }
         System.out.println();
 
         System.out.println("Разность двух интервалов : ");
 
-        Range[] rangeDifference = range.getRangeDifference(newRange);
+        Range[] difference = range.getDifference(newRange);
 
-        for (Range e : rangeDifference) {
+        for (Range e : difference) {
             System.out.println(e.getFrom() + ", " + e.getTo());
         }
     }
