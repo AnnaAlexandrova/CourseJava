@@ -30,73 +30,58 @@ public class Range {
     }
 
     public boolean isInside(double x) {
-        return ((from <= x) && (x <= to));
+        return (from <= x && x <= to);
     }
 
     public boolean isIntersect(Range range) {
-        return (((from > range.from) && (from <= range.to)) ||
-                ((from <= range.from) && (range.from <= to)));
+        return isInside(range.from) || isInside(range.to);
     }
 
     public Range getIntersection(Range range) {
-        double inFrom = from;
-        double inTo = to;
-
-        if ((from >= range.to) || (range.from >= to)) {
+        if (from >= range.to || range.from >= to) {
             return null;
         }
-
-        inFrom = (range.from > from) ? range.from : inFrom;
-
-        if (from < range.from) {
-            inTo = (range.to > to) ? inTo : range.to;
-        } else {
-            inTo = (range.to < to) ? range.to : inTo;
-        }
+        double inFrom = Math.max(from, range.from);
+        double inTo = Math.min(to, range.to);
 
         return new Range(inFrom, inTo);
     }
 
-    public Range[] getMerger(Range range) {
-        double mergeFrom = from;
-        double mergeTo = to;
-
-        Range merger = new Range(mergeFrom, mergeTo);
-
+    public Range[] getUnion(Range range) {
         if (isIntersect(range)) {
-            Range[] result = {merger};
+            double unionFrom = Math.min(from, range.from);
+            double unionTo = Math.max(to, range.to);
 
-            mergeFrom = (from > range.from) ? range.from : mergeFrom;
-            mergeTo = (to > range.to) ? mergeTo : range.to;
-
-            merger.setFrom(mergeFrom);
-            merger.setTo(mergeTo);
+            Range[] result = new Range[1];
+            result[0] = new Range(unionFrom, unionTo);
 
             return result;
         }
 
         Range[] result = new Range[2];
 
+        Range range1 = new Range(from, to);
+        Range range2 = new Range(range.from, range.to);
+
         if (from < range.from) {
-            result[0] = merger;
-            result[1] = range;
+            result[0] = range1;
+            result[1] = range2;
         } else {
-            result[0] = range;
-            result[1] = merger;
+            result[0] = range2;
+            result[1] = range1;
         }
         return result;
     }
 
     public Range[] getDifference(Range range) {
-        double differFrom = from;
-        double differTo = to;
-
-        Range differ = new Range(differFrom, differTo);
-        Range[] result = {differ};
-
-        if ((from >= range.to) || (range.from >= to)) {
+        if (from >= range.to || range.from >= to) {
+            Range[] result = new Range[1];
+            result[0] = new Range(from, to);
             return result;
         }
+
+        double differFrom = from;
+        double differTo = to;
 
         if (from < range.from) {
             if (to > range.to) {
@@ -106,13 +91,18 @@ public class Range {
 
                 return result2;
             } else {
-                differ.setTo(range.from);
+                differTo = range.from;
             }
-        } else if ((from > range.from) && (range.to < to)) {
-            differ.setFrom(range.to);
+
+        } else if (from > range.from && range.to < to) {
+            differFrom = range.to;
         } else {
             return new Range[0];
         }
+
+        Range[] result = new Range[1];
+        result[0] = new Range(differFrom, differTo);
+
         return result;
     }
 }

@@ -37,7 +37,7 @@ public class RangeMain {
         }
         System.out.println();
 
-        Range[] merger = range.getMerger(newRange);
+        Range[] merger = range.getUnion(newRange);
 
         System.out.println("Объединение двух интервалов : ");
 
