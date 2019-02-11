@@ -34,11 +34,11 @@ public class Range {
     }
 
     public boolean isIntersect(Range range) {
-        return isInside(range.from) || isInside(range.to);
+        return (range.from < to && from < range.to);
     }
 
     public Range getIntersection(Range range) {
-        if (from >= range.to || range.from >= to) {
+        if (!isIntersect(range)) {
             return null;
         }
         double inFrom = Math.max(from, range.from);
@@ -48,12 +48,11 @@ public class Range {
     }
 
     public Range[] getUnion(Range range) {
-        if (isIntersect(range)) {
+        if (range.from <= to && from <= range.to) {
             double unionFrom = Math.min(from, range.from);
             double unionTo = Math.max(to, range.to);
 
-            Range[] result = new Range[1];
-            result[0] = new Range(unionFrom, unionTo);
+            Range[] result = {new Range(unionFrom, unionTo)};
 
             return result;
         }
@@ -74,9 +73,8 @@ public class Range {
     }
 
     public Range[] getDifference(Range range) {
-        if (from >= range.to || range.from >= to) {
-            Range[] result = new Range[1];
-            result[0] = new Range(from, to);
+        if (!isIntersect(range)) {
+            Range[] result = {new Range(from, to)};
             return result;
         }
 
@@ -85,23 +83,18 @@ public class Range {
 
         if (from < range.from) {
             if (to > range.to) {
-                Range[] result2 = new Range[2];
-                result2[0] = new Range(from, range.from);
-                result2[1] = new Range(range.to, to);
+                Range[] result2 = {new Range(from, range.from), new Range(range.to, to)};
 
                 return result2;
             } else {
                 differTo = range.from;
             }
-
-        } else if (from > range.from && range.to < to) {
+        } else if (from >= range.from && range.to < to) {
             differFrom = range.to;
         } else {
             return new Range[0];
         }
-
-        Range[] result = new Range[1];
-        result[0] = new Range(differFrom, differTo);
+        Range[] result = {new Range(differFrom, differTo)};
 
         return result;
     }

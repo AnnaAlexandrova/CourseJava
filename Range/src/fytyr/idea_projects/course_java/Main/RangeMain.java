@@ -24,24 +24,21 @@ public class RangeMain {
         }
         System.out.println();
 
-        Range newRange = new Range(-70, 10);
+        Range newRange = new Range(-50, 10);
 
-        try {
-            Range rangeIn = range.getIntersection(newRange);
-
-            assert rangeIn != null;
-            System.out.println("Пересечение интервалов : " + rangeIn.getFrom() + ", " + rangeIn.getTo());
-
-        } catch (NullPointerException e) {
+        Range rangeIn = range.getIntersection(newRange);
+        if (rangeIn == null) {
             System.out.println("Интервалы не пересекаются");
+        } else {
+            System.out.println("Пересечение интервалов : " + rangeIn.getFrom() + ", " + rangeIn.getTo());
         }
         System.out.println();
 
-        Range[] merger = range.getUnion(newRange);
+        Range[] union = range.getUnion(newRange);
 
         System.out.println("Объединение двух интервалов : ");
 
-        for (Range e : merger) {
+        for (Range e : union) {
             System.out.println(e.getFrom() + ", " + e.getTo());
         }
         System.out.println();
