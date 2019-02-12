@@ -52,9 +52,7 @@ public class Range {
             double unionFrom = Math.min(from, range.from);
             double unionTo = Math.max(to, range.to);
 
-            Range[] result = {new Range(unionFrom, unionTo)};
-
-            return result;
+            return new Range[]{new Range(unionFrom, unionTo)};
         }
 
         Range[] result = new Range[2];
@@ -74,8 +72,7 @@ public class Range {
 
     public Range[] getDifference(Range range) {
         if (!isIntersect(range)) {
-            Range[] result = {new Range(from, to)};
-            return result;
+            return new Range[]{new Range(from, to)};
         }
 
         double differFrom = from;
@@ -83,9 +80,8 @@ public class Range {
 
         if (from < range.from) {
             if (to > range.to) {
-                Range[] result2 = {new Range(from, range.from), new Range(range.to, to)};
+                return new Range[]{new Range(from, range.from), new Range(range.to, to)};
 
-                return result2;
             } else {
                 differTo = range.from;
             }
@@ -94,8 +90,6 @@ public class Range {
         } else {
             return new Range[0];
         }
-        Range[] result = {new Range(differFrom, differTo)};
-
-        return result;
+        return new Range[]{new Range(differFrom, differTo)};
     }
 }

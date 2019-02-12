@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class RangeMain {
     public static void main(String[] args) {
-        Range range = new Range(-50, 25.5);
+        Range range = new Range(5, 15);
         System.out.println("Диапазон находится от " + range.getFrom() + " до " + range.getTo());
 
         double length = range.getLength();
@@ -24,7 +24,7 @@ public class RangeMain {
         }
         System.out.println();
 
-        Range newRange = new Range(-50, 10);
+        Range newRange = new Range(15, 20);
 
         Range rangeIn = range.getIntersection(newRange);
         if (rangeIn == null) {
