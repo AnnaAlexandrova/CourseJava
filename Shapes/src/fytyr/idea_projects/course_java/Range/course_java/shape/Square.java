@@ -1,6 +1,8 @@
-package fytyr.idea_projects.course_java.Range.course_java.shapes;
+package fytyr.idea_projects.course_java.Range.course_java.shape;
 
-public class Square implements Shapes {
+public class Square implements Shape {
+    private final double EPSILON = 1.0e-10;
+
     private double sideLength;
 
     public Square(double sideLength) {
@@ -41,14 +43,17 @@ public class Square implements Shapes {
         return 4 * sideLength;
     }
 
+    @Override
     public String toString() {
         return "[sideLength = " + this.sideLength + ", Area = " + this.getArea() + ", Perimeter = " + this.getPerimeter() + "]";
     }
 
+    @Override
     public boolean equals(Object object) {
         if (object == this) {
             return true;
-        } else if (object == null || object.getClass() != this.getClass()) {
+        }
+        if (object == null || object.getClass() != this.getClass()) {
             return false;
         }
         Square square = (Square) object;
@@ -56,9 +61,8 @@ public class Square implements Shapes {
         return sideLength == square.sideLength;
     }
 
+    @Override
     public int hashCode() {
-        int hash = 1;
-        hash = prime * hash + Double.hashCode(sideLength);
-        return hash;
+        return Double.hashCode(sideLength);
     }
 }

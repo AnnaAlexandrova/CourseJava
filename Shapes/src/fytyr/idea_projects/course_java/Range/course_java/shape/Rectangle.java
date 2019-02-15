@@ -1,6 +1,8 @@
-package fytyr.idea_projects.course_java.Range.course_java.shapes;
+package fytyr.idea_projects.course_java.Range.course_java.shape;
 
-public class Rectangle implements Shapes {
+public class Rectangle implements Shape {
+    private final double EPSILON = 1.0e-10;
+
     private double width;
     private double height;
 
@@ -26,31 +28,38 @@ public class Rectangle implements Shapes {
         this.height = height;
     }
 
+    @Override
     public double getWidth() {
         return width;
     }
 
+    @Override
     public double getHeight() {
         return height;
     }
 
+    @Override
     public double getArea() {
         return width * height;
     }
 
+    @Override
     public double getPerimeter() {
         return 2 * (width + height);
     }
 
+    @Override
     public String toString() {
         return "[Width = " + this.width + ", Height = " + this.height +
                 ", Area = " + this.getArea() + ", Perimeter = " + this.getPerimeter() + "]";
     }
 
+    @Override
     public boolean equals(Object object) {
         if (object == this) {
             return true;
-        } else if (object == null || object.getClass() != this.getClass()) {
+        }
+        if (object == null || object.getClass() != this.getClass()) {
             return false;
         }
         Rectangle rectangle = (Rectangle) object;
@@ -58,7 +67,9 @@ public class Rectangle implements Shapes {
         return width == rectangle.width && height == rectangle.height;
     }
 
+    @Override
     public int hashCode() {
+        int prime = 17;
         int hash = 1;
         hash = prime * hash + Double.hashCode(width);
         hash = prime * hash + Double.hashCode(height);

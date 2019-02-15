@@ -1,6 +1,8 @@
-package fytyr.idea_projects.course_java.Range.course_java.shapes;
+package fytyr.idea_projects.course_java.Range.course_java.shape;
 
-public class Triangle implements Shapes {
+public class Triangle implements Shape {
+    private final double EPSILON = 1.0e-10;
+
     private double x1;
     private double y1;
     private double x2;
@@ -57,16 +59,8 @@ public class Triangle implements Shapes {
         this.y3 = y3;
     }
 
-    public double getSide1Length() {
-        return Math.sqrt(Math.pow((x2 - x1), 2) + (Math.pow((y2 - y1), 2)));
-    }
-
-    public double getSide2Length() {
-        return Math.sqrt(Math.pow((x3 - x1), 2) + (Math.pow((y3 - y1), 2)));
-    }
-
-    public double getSide3Length() {
-        return Math.sqrt(Math.pow((x3 - x2), 2) + (Math.pow((y3 - y2), 2)));
+    public double getSideLength(double fromX, double fromY, double toX, double toY) {
+        return Math.sqrt(Math.pow((toX - fromX), 2) + (Math.pow((toY - fromY), 2)));
     }
 
     @Override
@@ -82,25 +76,28 @@ public class Triangle implements Shapes {
     @Override
     public double getArea() {
         double semiPerimeter = getPerimeter() / 2;
-        return Math.sqrt(semiPerimeter * (semiPerimeter - getSide1Length()) *
-                (semiPerimeter - getSide2Length()) * (semiPerimeter - getSide3Length()));
+        return Math.sqrt(semiPerimeter * (semiPerimeter - getSideLength(x1, y1, x2, y2)) *
+                (semiPerimeter - getSideLength(x1, y1, x3, y3)) * (semiPerimeter - getSideLength(x2, y2, x3, y3)));
     }
 
     @Override
     public double getPerimeter() {
-        return getSide1Length() + getSide2Length() + getSide3Length();
+        return getSideLength(x1, y1, x2, y2) + getSideLength(x1, y1, x3, y3) + getSideLength(x2, y2, x3, y3);
     }
 
+    @Override
     public String toString() {
         return "[Points : (" + this.x1 + ", " + this.y1 + "; " + this.x2 + ", " + this.y2 + "; " + this.x3 + ", " + this.y3 +
                 ") Width = " + this.getWidth() + ", Height = " + this.getHeight() +
                 ", Area = " + this.getArea() + ", Perimeter = " + this.getPerimeter() + "]";
     }
 
+    @Override
     public boolean equals(Object object) {
         if (object == this) {
             return true;
-        } else if (object == null || object.getClass() != this.getClass()) {
+        }
+        if (object == null || object.getClass() != this.getClass()) {
             return false;
         }
         Triangle triangle = (Triangle) object;
@@ -110,7 +107,9 @@ public class Triangle implements Shapes {
                 x3 == triangle.x3 && y3 == triangle.y3;
     }
 
+    @Override
     public int hashCode() {
+        int prime = 17;
         int hash = 1;
         hash = prime * hash + Double.hashCode(x1);
         hash = prime * hash + Double.hashCode(y1);
