@@ -45,7 +45,7 @@ public class Circle implements Shape {
 
     @Override
     public String toString() {
-        return "[radius = " + this.radius + ", Width = " + this.getWidth() + ", Height = " + this.getHeight()
+        return "[Type : Circle, radius = " + this.radius + ", Width = " + this.getWidth() + ", Height = " + this.getHeight()
                 + ", Area = " + this.getArea() + ", Perimeter = " + this.getPerimeter() + "]";
     }
 

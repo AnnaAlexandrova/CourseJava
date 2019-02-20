@@ -59,7 +59,7 @@ public class Triangle implements Shape {
         this.y3 = y3;
     }
 
-    public double getSideLength(double fromX, double fromY, double toX, double toY) {
+    private static double getSideLength(double fromX, double fromY, double toX, double toY) {
         return Math.sqrt(Math.pow((toX - fromX), 2) + (Math.pow((toY - fromY), 2)));
     }
 
@@ -87,7 +87,7 @@ public class Triangle implements Shape {
 
     @Override
     public String toString() {
-        return "[Points : (" + this.x1 + ", " + this.y1 + "; " + this.x2 + ", " + this.y2 + "; " + this.x3 + ", " + this.y3 +
+        return "[Type : Triangle, Points : (" + this.x1 + ", " + this.y1 + "; " + this.x2 + ", " + this.y2 + "; " + this.x3 + ", " + this.y3 +
                 ") Width = " + this.getWidth() + ", Height = " + this.getHeight() +
                 ", Area = " + this.getArea() + ", Perimeter = " + this.getPerimeter() + "]";
     }

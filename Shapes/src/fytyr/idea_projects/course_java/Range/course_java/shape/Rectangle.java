@@ -50,7 +50,7 @@ public class Rectangle implements Shape {
 
     @Override
     public String toString() {
-        return "[Width = " + this.width + ", Height = " + this.height +
+        return "[Type : Rectangle, Width = " + this.width + ", Height = " + this.height +
                 ", Area = " + this.getArea() + ", Perimeter = " + this.getPerimeter() + "]";
     }
 

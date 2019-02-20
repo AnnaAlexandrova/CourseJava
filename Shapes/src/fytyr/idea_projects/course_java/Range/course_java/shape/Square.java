@@ -45,7 +45,7 @@ public class Square implements Shape {
 
     @Override
     public String toString() {
-        return "[sideLength = " + this.sideLength + ", Area = " + this.getArea() + ", Perimeter = " + this.getPerimeter() + "]";
+        return "[Type : Square, sideLength = " + this.sideLength + ", Area = " + this.getArea() + ", Perimeter = " + this.getPerimeter() + "]";
     }
 
     @Override

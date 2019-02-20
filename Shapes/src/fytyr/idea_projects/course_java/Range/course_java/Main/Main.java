@@ -2,8 +2,7 @@ package fytyr.idea_projects.course_java.Range.course_java.Main;
 
 import fytyr.idea_projects.course_java.Range.course_java.shape.*;
 
-import static fytyr.idea_projects.course_java.Range.course_java.Main.AreaComparator.makeAreaSort;
-import static fytyr.idea_projects.course_java.Range.course_java.Main.PerimeterComparator.makePerimeterSort;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
@@ -25,11 +24,11 @@ public class Main {
         }
 
         System.out.println("Фигура с максимальной площадью : ");
-        makeAreaSort(shapes);
+        Arrays.sort(shapes, new AreaComparator());
         System.out.println(shapes[shapes.length - 1]);
 
         System.out.println("Фигура со вторым по величине периметром : ");
-        makePerimeterSort(shapes);
+        Arrays.sort(shapes, new PerimeterComparator());
         System.out.println(shapes[shapes.length - 2]);
     }
 }
