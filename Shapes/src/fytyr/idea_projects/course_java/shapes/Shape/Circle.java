@@ -1,7 +1,7 @@
-package fytyr.idea_projects.course_java.Range.course_java.shape;
+package fytyr.idea_projects.course_java.shapes.Shape;
 
 public class Circle implements Shape {
-    private final double EPSILON = 1.0e-10;
+    private final static double EPSILON = 1.0e-10;
 
     private double radius;
 

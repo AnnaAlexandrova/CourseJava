@@ -1,6 +1,6 @@
-package fytyr.idea_projects.course_java.Range.course_java.Main;
+package fytyr.idea_projects.course_java.shapes.Main;
 
-import fytyr.idea_projects.course_java.Range.course_java.shape.*;
+import fytyr.idea_projects.course_java.shapes.Shape.*;
 
 import java.util.Arrays;
 
@@ -32,3 +32,6 @@ public class Main {
         System.out.println(shapes[shapes.length - 2]);
     }
 }
+
+
+

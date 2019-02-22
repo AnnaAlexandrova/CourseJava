@@ -1,4 +1,4 @@
-package fytyr.idea_projects.course_java.Range.course_java.shape;
+package fytyr.idea_projects.course_java.shapes.Shape;
 
 public interface Shape {
     double getWidth();

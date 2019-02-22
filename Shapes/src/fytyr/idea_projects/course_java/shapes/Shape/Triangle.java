@@ -1,7 +1,7 @@
-package fytyr.idea_projects.course_java.Range.course_java.shape;
+package fytyr.idea_projects.course_java.shapes.Shape;
 
 public class Triangle implements Shape {
-    private final double EPSILON = 1.0e-10;
+    private final static double EPSILON = 1.0e-10;
 
     private double x1;
     private double y1;
@@ -47,15 +47,45 @@ public class Triangle implements Shape {
         return y3;
     }
 
-    public void setPoints(double x1, double y1, double x2, double y2, double x3, double y3) {
+    public void setX1(double x1) {
         if (Math.abs((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) <= EPSILON) {
             throw new IllegalArgumentException("Точки с заданными координатами лежат на одной прямой");
         }
         this.x1 = x1;
+    }
+
+    public void setY1(double y1) {
+        if (Math.abs((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) <= EPSILON) {
+            throw new IllegalArgumentException("Точки с заданными координатами лежат на одной прямой");
+        }
         this.y1 = y1;
+    }
+
+    public void stX2(double x2) {
+        if (Math.abs((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) <= EPSILON) {
+            throw new IllegalArgumentException("Точки с заданными координатами лежат на одной прямой");
+        }
         this.x2 = x2;
+    }
+
+    public void setY2(double y2) {
+        if (Math.abs((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) <= EPSILON) {
+            throw new IllegalArgumentException("Точки с заданными координатами лежат на одной прямой");
+        }
         this.y2 = y2;
+    }
+
+    public void setX3(double x3) {
+        if (Math.abs((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) <= EPSILON) {
+            throw new IllegalArgumentException("Точки с заданными координатами лежат на одной прямой");
+        }
         this.x3 = x3;
+    }
+
+    public void setY3(double y3) {
+        if (Math.abs((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) <= EPSILON) {
+            throw new IllegalArgumentException("Точки с заданными координатами лежат на одной прямой");
+        }
         this.y3 = y3;
     }
 
