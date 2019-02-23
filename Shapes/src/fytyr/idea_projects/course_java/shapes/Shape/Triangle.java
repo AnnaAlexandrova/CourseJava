@@ -47,46 +47,40 @@ public class Triangle implements Shape {
         return y3;
     }
 
-    public void setX1(double x1) {
+    private void makeExceptionCheck() {
         if (Math.abs((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) <= EPSILON) {
             throw new IllegalArgumentException("Точки с заданными координатами лежат на одной прямой");
         }
+    }
+
+    public void setX1(double x1) {
         this.x1 = x1;
+        makeExceptionCheck();
     }
 
     public void setY1(double y1) {
-        if (Math.abs((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) <= EPSILON) {
-            throw new IllegalArgumentException("Точки с заданными координатами лежат на одной прямой");
-        }
         this.y1 = y1;
+        makeExceptionCheck();
     }
 
-    public void stX2(double x2) {
-        if (Math.abs((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) <= EPSILON) {
-            throw new IllegalArgumentException("Точки с заданными координатами лежат на одной прямой");
-        }
+    public void setX2(double x2) {
         this.x2 = x2;
+        makeExceptionCheck();
     }
 
     public void setY2(double y2) {
-        if (Math.abs((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) <= EPSILON) {
-            throw new IllegalArgumentException("Точки с заданными координатами лежат на одной прямой");
-        }
         this.y2 = y2;
+        makeExceptionCheck();
     }
 
     public void setX3(double x3) {
-        if (Math.abs((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) <= EPSILON) {
-            throw new IllegalArgumentException("Точки с заданными координатами лежат на одной прямой");
-        }
         this.x3 = x3;
+        makeExceptionCheck();
     }
 
     public void setY3(double y3) {
-        if (Math.abs((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) <= EPSILON) {
-            throw new IllegalArgumentException("Точки с заданными координатами лежат на одной прямой");
-        }
         this.y3 = y3;
+        makeExceptionCheck();
     }
 
     private static double getSideLength(double fromX, double fromY, double toX, double toY) {
