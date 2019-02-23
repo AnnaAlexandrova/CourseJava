@@ -3,84 +3,100 @@ package fytyr.idea_projects.course_java.vector;
 import java.util.Arrays;
 
 public class Vector {
-    private double[] vector;
-    private final static double EPSILON = 1.0e-10;
+    private double[] components;
 
     public Vector(int size) {
-        if (size <= EPSILON) {
+        if (size <= 0) {
             throw new IllegalArgumentException("Размер вектора должен быть > 0");
         }
-        this.vector = new double[size];
+        this.components = new double[size];
     }
 
     public Vector(Vector vector) {
-        this.vector = vector.vector;
+        this.components = Arrays.copyOf(vector.components, vector.components.length);
     }
 
     public Vector(double[] array) {
-        if (array == null || array.length == 0) {
-            throw new IllegalArgumentException("Вектор равен NULL или содержит массив длины 0");
+        if (array == null) {
+            throw new NullPointerException("Вектор равен NULL");
         }
-        this.vector = array;
+        if (array.length == 0) {
+            throw new IllegalArgumentException("Длина переданного массива равна 0");
+        }
+        this.components = array;
     }
 
     public Vector(int size, double[] array) {
-        if (size <= EPSILON) {
+        if (size <= 0) {
             throw new IllegalArgumentException("Размер вектора должен быть > 0");
         }
-        if (size < array.length) {
-            size = array.length;
+        if (array == null) {
+            throw new NullPointerException("Вектор равен NULL");
         }
-        this.vector = Arrays.copyOf(array, size);
+        this.components = Arrays.copyOf(array, size);
     }
 
     public int getSize() {
-        return vector.length;
+        return components.length;
     }
 
     @Override
     public String toString() {
-        return Arrays.toString(vector);
+        StringBuilder string = new StringBuilder();
+        string.append("{ ");
+        for (double component : components) {
+            string.append(component).append(", ");
+        }
+        int endIndex = string.lastIndexOf(", ");
+        string.deleteCharAt(endIndex);
+        string.append("}");
+        return string.toString();
     }
 
-    public void addVector(Vector vector2) {
-        for (int i = 0; i < vector.length; i++) {
-            this.vector[i] = vector[i] + vector2.vector[i];
+    private void makeOneSize(Vector vector) {
+        if (components.length < vector.getSize()) {
+            components = new Vector(vector.getSize(), components).components;
         }
     }
 
-    public void subVector(Vector vector2) {
-        for (int i = 0; i < vector.length; i++) {
-            this.vector[i] = vector[i] - vector2.vector[i];
+    public void addVector(Vector vector) {
+        makeOneSize(vector);
+        for (int i = 0; i < vector.getSize(); i++) {
+            this.components[i] += vector.components[i];
         }
     }
 
-    public void multiScalar(double scalar) {
-        for (int i = 0; i < vector.length; i++) {
-            this.vector[i] = vector[i] * scalar;
+    public void subVector(Vector vector) {
+        makeOneSize(vector);
+        for (int i = 0; i < vector.getSize(); i++) {
+            this.components[i] -= vector.components[i];
+        }
+    }
+
+    public void multiplicationScalar(double scalar) {
+        for (int i = 0; i < components.length; i++) {
+            this.components[i] *= scalar;
         }
     }
 
     public void turn() {
-        for (int i = 0; i < vector.length; i++) {
-            this.vector[i] = vector[i] * (-1);
-        }
+        multiplicationScalar(-1);
     }
 
     public double getLength() {
         double length = 0;
-        for (double v : vector) {
+        for (double v : components) {
             length += Math.pow(v, 2);
         }
         return Math.abs(Math.sqrt(length));
     }
 
     public double getComponent(int index) {
-        return vector[index];
+        return components[index];
     }
 
     public void setComponent(int index, double component) {
-        this.vector[index] = component;
+        this.components[index] = component;
     }
 
     @Override
@@ -91,41 +107,34 @@ public class Vector {
         if (object == null || object.getClass() != this.getClass()) {
             return false;
         }
-        Vector v = (Vector) object;
 
-        for (int i = 0; i < vector.length; ++i) {
-            if (Double.doubleToLongBits(vector[i]) != Double.doubleToLongBits(v.vector[i])) {
-                return false;
-            }
+        Vector vector = (Vector) object;
+
+        if (components.length != vector.getSize()) {
+            return false;
         }
-        return true;
+        return Arrays.equals(components, vector.components);
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(vector);
+        return Arrays.hashCode(components);
     }
 
     public static Vector addition(Vector vector, Vector vector2) {
-        Vector result = new Vector(Math.min(vector.getSize(), vector2.getSize()));
-        for (int i = 0; i < result.getSize(); i++) {
-            result.vector[i] = vector.vector[i] + vector2.vector[i];
-        }
-        return result;
+        vector.addVector(vector2);
+        return new Vector(vector);
     }
 
     public static Vector subtraction(Vector vector, Vector vector2) {
-        Vector result = new Vector(Math.min(vector.getSize(), vector2.getSize()));
-        for (int i = 0; i < result.getSize(); i++) {
-            result.vector[i] = vector.vector[i] - vector2.vector[i];
-        }
-        return result;
+        vector.subVector(vector2);
+        return new Vector(vector);
     }
 
-    public static Vector multiplication(Vector vector, Vector vector2) {
-        Vector result = new Vector(Math.min(vector.getSize(), vector2.getSize()));
-        for (int i = 0; i < result.getSize(); i++) {
-            result.vector[i] = vector.vector[i] * vector2.vector[i];
+    public static double multiplication(Vector vector, Vector vector2) {
+        double result = 0;
+        for (int i = 0; i < Math.min(vector.getSize(), vector2.getSize()); i++) {
+            result += vector.components[i] * vector2.components[i];
         }
         return result;
     }
