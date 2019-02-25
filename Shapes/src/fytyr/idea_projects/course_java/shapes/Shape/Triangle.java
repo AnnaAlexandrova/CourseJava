@@ -1,8 +1,6 @@
 package fytyr.idea_projects.course_java.shapes.Shape;
 
 public class Triangle implements Shape {
-    private final static double EPSILON = 1.0e-10;
-
     private double x1;
     private double y1;
     private double x2;
@@ -10,11 +8,15 @@ public class Triangle implements Shape {
     private double x3;
     private double y3;
 
-    public Triangle(double x1, double y1, double x2, double y2, double x3, double y3) {
+    private void makeOneLineExceptionCheck(double x1, double y1, double x2, double y2, double x3, double y3) {
+        final double EPSILON = 1.0e-10;
         if (Math.abs((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) <= EPSILON) {
             throw new IllegalArgumentException("Точки с заданными координатами лежат на одной прямой");
         }
+    }
 
+    public Triangle(double x1, double y1, double x2, double y2, double x3, double y3) {
+        makeOneLineExceptionCheck(x1, y1, x2, y2, x3, y3);
         this.x1 = x1;
         this.y1 = y1;
         this.x2 = x2;
@@ -47,40 +49,35 @@ public class Triangle implements Shape {
         return y3;
     }
 
-    private void makeExceptionCheck() {
-        if (Math.abs((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) <= EPSILON) {
-            throw new IllegalArgumentException("Точки с заданными координатами лежат на одной прямой");
-        }
-    }
 
     public void setX1(double x1) {
+        makeOneLineExceptionCheck(x1, y1, x2, y2, x3, y3);
         this.x1 = x1;
-        makeExceptionCheck();
     }
 
     public void setY1(double y1) {
+        makeOneLineExceptionCheck(x1, y1, x2, y2, x3, y3);
         this.y1 = y1;
-        makeExceptionCheck();
     }
 
     public void setX2(double x2) {
+        makeOneLineExceptionCheck(x1, y1, x2, y2, x3, y3);
         this.x2 = x2;
-        makeExceptionCheck();
     }
 
     public void setY2(double y2) {
+        makeOneLineExceptionCheck(x1, y1, x2, y2, x3, y3);
         this.y2 = y2;
-        makeExceptionCheck();
     }
 
     public void setX3(double x3) {
+        makeOneLineExceptionCheck(x1, y1, x2, y2, x3, y3);
         this.x3 = x3;
-        makeExceptionCheck();
     }
 
     public void setY3(double y3) {
+        makeOneLineExceptionCheck(x1, y1, x2, y2, x3, y3);
         this.y3 = y3;
-        makeExceptionCheck();
     }
 
     private static double getSideLength(double fromX, double fromY, double toX, double toY) {
