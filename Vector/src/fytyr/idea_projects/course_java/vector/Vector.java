@@ -23,7 +23,7 @@ public class Vector {
         if (array.length == 0) {
             throw new IllegalArgumentException("Длина переданного массива равна 0");
         }
-        this.components = array;
+        this.components = Arrays.copyOf(array, array.length);
     }
 
     public Vector(int size, double[] array) {
@@ -55,7 +55,7 @@ public class Vector {
 
     private void makeOneSize(Vector vector) {
         if (components.length < vector.getSize()) {
-            components = new Vector(vector.getSize(), components).components;
+            components = Arrays.copyOf(components, vector.getSize());
         }
     }
 
@@ -73,14 +73,14 @@ public class Vector {
         }
     }
 
-    public void multiplicationScalar(double scalar) {
+    public void multiplyScalar(double scalar) {
         for (int i = 0; i < components.length; i++) {
             this.components[i] *= scalar;
         }
     }
 
     public void turn() {
-        multiplicationScalar(-1);
+        multiplyScalar(-1);
     }
 
     public double getLength() {
@@ -88,7 +88,7 @@ public class Vector {
         for (double v : components) {
             length += Math.pow(v, 2);
         }
-        return Math.abs(Math.sqrt(length));
+        return Math.sqrt(length);
     }
 
     public double getComponent(int index) {
@@ -107,12 +107,8 @@ public class Vector {
         if (object == null || object.getClass() != this.getClass()) {
             return false;
         }
-
         Vector vector = (Vector) object;
 
-        if (components.length != vector.getSize()) {
-            return false;
-        }
         return Arrays.equals(components, vector.components);
     }
 
@@ -122,18 +118,21 @@ public class Vector {
     }
 
     public static Vector addition(Vector vector, Vector vector2) {
-        vector.addVector(vector2);
-        return new Vector(vector);
+        Vector result = new Vector(vector);
+        result.addVector(vector2);
+        return result;
     }
 
     public static Vector subtraction(Vector vector, Vector vector2) {
-        vector.subVector(vector2);
-        return new Vector(vector);
+        Vector result = new Vector(vector);
+        result.subVector(vector2);
+        return result;
     }
 
-    public static double multiplication(Vector vector, Vector vector2) {
+    public static double multiplicationScalar(Vector vector, Vector vector2) {
         double result = 0;
-        for (int i = 0; i < Math.min(vector.getSize(), vector2.getSize()); i++) {
+        int length = Math.min(vector.getSize(), vector2.getSize());
+        for (int i = 0; i < length; i++) {
             result += vector.components[i] * vector2.components[i];
         }
         return result;

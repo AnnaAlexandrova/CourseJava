@@ -24,7 +24,7 @@ public class Main {
         vector.subVector(vector3);
         System.out.println(vector.toString());
 
-        vector.multiplicationScalar(2);
+        vector.multiplyScalar(2);
         System.out.println(vector.toString());
 
         vector.turn();
@@ -45,6 +45,6 @@ public class Main {
         Vector vector5 = Vector.subtraction(vector2, vector3);
         System.out.println(vector5.toString());
 
-        System.out.println(Vector.multiplication(vector2, vector3));
+        System.out.println(Vector.multiplicationScalar(vector2, vector3));
     }
 }
