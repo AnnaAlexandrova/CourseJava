@@ -13,6 +13,12 @@ public class Vector {
     }
 
     public Vector(Vector vector) {
+        if (vector.components == null) {
+            throw new NullPointerException("Вектор равен NULL");
+        }
+        if (vector.components.length == 0) {
+            throw new IllegalArgumentException("Длина переданного вектора равна 0");
+        }
         this.components = Arrays.copyOf(vector.components, vector.components.length);
     }
 
@@ -53,7 +59,7 @@ public class Vector {
         return string.toString();
     }
 
-    private void makeOneSize(Vector vector) {
+    public void makeOneSize(Vector vector) {
         if (components.length < vector.getSize()) {
             components = Arrays.copyOf(components, vector.getSize());
         }
@@ -73,14 +79,14 @@ public class Vector {
         }
     }
 
-    public void multiplyScalar(double scalar) {
+    public void multiplyOnScalar(double scalar) {
         for (int i = 0; i < components.length; i++) {
             this.components[i] *= scalar;
         }
     }
 
     public void turn() {
-        multiplyScalar(-1);
+        multiplyOnScalar(-1);
     }
 
     public double getLength() {
@@ -117,23 +123,23 @@ public class Vector {
         return Arrays.hashCode(components);
     }
 
-    public static Vector addition(Vector vector, Vector vector2) {
-        Vector result = new Vector(vector);
+    public static Vector addition(Vector vector1, Vector vector2) {
+        Vector result = new Vector(vector1);
         result.addVector(vector2);
         return result;
     }
 
-    public static Vector subtraction(Vector vector, Vector vector2) {
-        Vector result = new Vector(vector);
+    public static Vector subtraction(Vector vector1, Vector vector2) {
+        Vector result = new Vector(vector1);
         result.subVector(vector2);
         return result;
     }
 
-    public static double multiplicationScalar(Vector vector, Vector vector2) {
+    public static double multiplicationScalar(Vector vector1, Vector vector2) {
         double result = 0;
-        int length = Math.min(vector.getSize(), vector2.getSize());
+        int length = Math.min(vector1.getSize(), vector2.getSize());
         for (int i = 0; i < length; i++) {
-            result += vector.components[i] * vector2.components[i];
+            result += vector1.components[i] * vector2.components[i];
         }
         return result;
     }

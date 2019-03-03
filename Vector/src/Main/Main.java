@@ -24,7 +24,7 @@ public class Main {
         vector.subVector(vector3);
         System.out.println(vector.toString());
 
-        vector.multiplyScalar(2);
+        vector.multiplyOnScalar(2);
         System.out.println(vector.toString());
 
         vector.turn();

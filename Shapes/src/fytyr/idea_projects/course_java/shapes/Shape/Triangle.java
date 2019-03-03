@@ -8,7 +8,7 @@ public class Triangle implements Shape {
     private double x3;
     private double y3;
 
-    private void makeOneLineExceptionCheck(double x1, double y1, double x2, double y2, double x3, double y3) {
+    private static void makeOneLineExceptionCheck(double x1, double y1, double x2, double y2, double x3, double y3) {
         final double EPSILON = 1.0e-10;
         if (Math.abs((x3 - x1) * (y2 - y1) - (x2 - x1) * (y3 - y1)) <= EPSILON) {
             throw new IllegalArgumentException("Точки с заданными координатами лежат на одной прямой");
