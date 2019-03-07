@@ -7,24 +7,24 @@ public class MatrixException extends RuntimeException {
         super(message);
     }
 
-    public static void NotPositiveArgumentException(int argument) {
-        if (argument < 0) {
-            throw new IllegalArgumentException("Переданный аргумент не может быть меньше 0");
-        }
-    }
-
-    public static void NotGreaterThenZeroArgumentException(int argument) {
+    public static void IllegalObjectSizeException(int argument) {
         if (argument <= 0) {
-            throw new IllegalArgumentException("Переданный аргумент должен быть больше 0");
+            throw new IllegalArgumentException("Размер объекта равен 0");
         }
     }
 
-    public static void NotNullArgumentException(Vector[] vectors) {
-        if (vectors == null) {
-            throw new NullPointerException("Аргумент равен null");
+    public static void IndexOutOfMatrixBoundsException(int index, int length) {
+        if (index < 0 || index > length - 1) {
+            throw new ArrayIndexOutOfBoundsException("Переданный индекс выходит за рамки диапозона");
         }
-        for (int i = 0; i < vectors.length; i++) {
-            if (vectors[i] == null) {
+    }
+
+    public static void NotNullArgumentException(Vector[] rows) {
+        if (rows == null) {
+            throw new NullPointerException("Переданный массив равен null");
+        }
+        for (int i = 0; i < rows.length; i++) {
+            if (rows[i] == null) {
                 throw new NullPointerException("Элемент массива по индексу " + i + " равен null");
             }
         }
@@ -32,40 +32,38 @@ public class MatrixException extends RuntimeException {
 
     public static void NotNullArgumentException(Vector vector) {
         if (vector == null) {
-            throw new NullPointerException("Аргумент равен null");
+            throw new NullPointerException("Переданный вектор равен null");
         }
     }
 
     public static void NotNullArgumentException(double[][] array) {
         if (array == null) {
-            throw new NullPointerException("Аргумент равен null");
+            throw new NullPointerException("Переданный массив равен null");
         }
     }
 
-    public static void NotAllowedMatrixSizeException(int size1, int size2, int messageIndex) {
+    public static void NotAllowedVectorSizeException(int size1, int size2) {
         if (size1 != size2) {
-            throw new IllegalArgumentException(getMessage(messageIndex).toString());
+            throw new IllegalArgumentException("Количество строк в матрице должно быть равно длине вектора");
         }
     }
 
-    private static StringBuilder getMessage(int index) {
-        StringBuilder message = new StringBuilder();
-        message.append("Не подходящий размер матрицы : ");
-        switch (index) {
-            case 1:
-                message.append("матрица должна быть квадратной");
-                break;
-            case 2:
-                message.append("количество строк в матрице должно быть равно длине вектора");
-                break;
-            case 3:
-                message.append("матрицы должны быть одного размера");
-                break;
-            case 4:
-                message.append("количечство строк одной матрицы должно быть равно количеству колонок в другой");
-                break;
+    public static void NotAllowedMatrixSizeException(int linesCount1, int linesCount2, int columnsCount1, int columnsCount2) {
+        if (linesCount1 != linesCount2 || columnsCount1 != columnsCount2) {
+            throw new IllegalArgumentException("Матрицы должны быть одного размера");
         }
-        return message;
+    }
+
+    public static void NotAllowedMatrixSizeException(int size1, int size2) {
+        if (size1 != size2) {
+            throw new IllegalArgumentException("Количечство строк одной матрицы должно быть равно количеству колонок в другой");
+        }
+    }
+
+    public static void NotQuadraticMatrixException(int size1, int size2) {
+        if (size1 != size2) {
+            throw new IllegalArgumentException("Матрица должна быть квадратной");
+        }
     }
 }
 
