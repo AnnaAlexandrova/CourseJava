@@ -1,19 +1,16 @@
 package fytyr.idea_projects.course_java.matrix;
 
+import fytyr.idea_projects.course_java.main.MatrixException;
 import fytyr.idea_projects.course_java.vector.Vector;
 
 import java.util.Arrays;
-
-import static fytyr.idea_projects.course_java.main.MatrixException.*;
-
-import static fytyr.idea_projects.course_java.vector.Vector.*;
 
 public class Matrix {
     private Vector[] rows;
 
     public Matrix(int rowsCount, int columnsCount) {
-        IllegalObjectSizeException(rowsCount);
-        IllegalObjectSizeException(columnsCount);
+        MatrixException.illegalObjectSizeException(rowsCount);
+        MatrixException.illegalObjectSizeException(columnsCount);
 
         this.rows = new Vector[rowsCount];
         for (int i = 0; i < rowsCount; ++i) {
@@ -22,9 +19,6 @@ public class Matrix {
     }
 
     public Matrix(Matrix matrix) {
-        NotNullArgumentException(matrix.rows);
-        IllegalObjectSizeException(matrix.rows.length);
-
         this.rows = new Vector[matrix.rows.length];
         for (int i = 0; i < matrix.rows.length; ++i) {
             rows[i] = new Vector(matrix.rows[i]);
@@ -32,23 +26,28 @@ public class Matrix {
     }
 
     public Matrix(double[][] array) {
-        NotNullArgumentException(array);
-        IllegalObjectSizeException(array.length);
+        MatrixException.notNullArgumentException(array);
+        MatrixException.illegalObjectSizeException(array.length);
 
         this.rows = new Vector[array.length];
 
         int length = getMaxLength(array);
         for (int i = 0; i < array.length; i++) {
+            MatrixException.illegalObjectSizeException(array[i].length);
             rows[i] = new Vector(length, array[i]);
         }
     }
 
     public Matrix(Vector[] newRows) {
-        NotNullArgumentException(newRows);
-        IllegalObjectSizeException(newRows.length);
+        MatrixException.notNullArgumentException(newRows);
+        MatrixException.illegalObjectSizeException(newRows.length);
 
-        this.rows = Arrays.copyOf(newRows, newRows.length);
-        makeOneSize(rows);
+        int length = getMaxLength(newRows);
+        this.rows = new Vector[newRows.length];
+        for (int i = 0; i < newRows.length; i++) {
+            rows[i] = new Vector(length);
+            rows[i].addVector(newRows[i]);
+        }
     }
 
     private static int getMaxLength(double[][] array) {
@@ -56,12 +55,21 @@ public class Matrix {
         for (int i = 1; i < array.length; i++) {
             maxLength = Math.max(array[i].length, array[i - 1].length);
         }
-        IllegalObjectSizeException(maxLength);
+        MatrixException.illegalObjectSizeException(maxLength);
+        return maxLength;
+    }
+
+    private static int getMaxLength(Vector[] rows) {
+        int maxLength = 0;
+        for (int i = 1; i < rows.length; i++) {
+            maxLength = Math.max(rows[i].getSize(), rows[i - 1].getSize());
+        }
+        MatrixException.illegalObjectSizeException(maxLength);
         return maxLength;
     }
 
     private static void makeOneSize(Vector[] vectors) {
-        for (int i = 0; i < vectors.length - 1; i++) {
+        for (int i = 0; i <= vectors.length; i++) {
             if (vectors[i].getSize() != vectors[i + 1].getSize()) {
                 for (int j = i + 1; j < vectors.length; j++) {
                     vectors[i].makeOneSize(vectors[j]);
@@ -80,13 +88,13 @@ public class Matrix {
     }
 
     public Vector getRow(int rowIndex) {
-        IndexOutOfMatrixBoundsException(rowIndex, rows.length);
+        MatrixException.indexOutOfMatrixBoundsException(rowIndex, rows.length);
         return new Vector(rows[rowIndex]);
     }
 
     public void setRow(int rowIndex, Vector newRow) {
-        IndexOutOfMatrixBoundsException(rowIndex, rows.length);
-        NotNullArgumentException(newRow);
+        MatrixException.indexOutOfMatrixBoundsException(rowIndex, rows.length);
+        MatrixException.notNullArgumentException(newRow);
 
         int rowLength = newRow.getSize();
 
@@ -98,7 +106,7 @@ public class Matrix {
     }
 
     public Vector getColumn(int columnIndex) {
-        IndexOutOfMatrixBoundsException(columnIndex, rows[0].getSize());
+        MatrixException.indexOutOfMatrixBoundsException(columnIndex, getColumnsCount());
 
         Vector column = new Vector(rows.length);
         for (int i = 0; i < rows.length; i++) {
@@ -112,7 +120,7 @@ public class Matrix {
         for (int i = 0; i < getColumnsCount(); i++) {
             tmp[i] = getColumn(i);
         }
-        rows = Arrays.copyOf(tmp, getColumnsCount());
+        rows = tmp;
     }
 
     public void multiplyOnScalar(double scalar) {
@@ -122,7 +130,7 @@ public class Matrix {
     }
 
     public double getDeterminant() {
-        NotQuadraticMatrixException(getRowsCount(), getColumnsCount());
+        MatrixException.notQuadraticMatrixException(getRowsCount(), getColumnsCount());
 
         if (rows.length == 1) {
             return getFirstOrderDeterminant();
@@ -195,18 +203,18 @@ public class Matrix {
     }
 
     public Vector multiplyOnVector(Vector vector) {
-        NotAllowedVectorSizeException(getColumnsCount(), vector.getSize());
+        MatrixException.notAllowedVectorSizeException(getColumnsCount(), vector.getSize());
 
         int length = getRowsCount();
         Vector result = new Vector(length);
         for (int i = 0; i < length; i++) {
-            result.setComponent(i, multiplicationScalar(getRow(i), vector));
+            result.setComponent(i, Vector.multiplicationScalar(rows[i], vector));
         }
         return result;
     }
 
     public void addMatrix(Matrix matrix) {
-        NotAllowedMatrixSizeException(getRowsCount(), matrix.getRowsCount(), getColumnsCount(), matrix.getColumnsCount());
+        MatrixException.notAllowedMatrixSizeException(getRowsCount(), matrix.getRowsCount(), getColumnsCount(), matrix.getColumnsCount());
 
         for (int i = 0; i < getRowsCount(); i++) {
             rows[i].addVector(matrix.getRow(i));
@@ -214,7 +222,7 @@ public class Matrix {
     }
 
     public void subMatrix(Matrix matrix) {
-        NotAllowedMatrixSizeException(getRowsCount(), matrix.getRowsCount(), getColumnsCount(), matrix.getColumnsCount());
+        MatrixException.notAllowedMatrixSizeException(getRowsCount(), matrix.getRowsCount(), getColumnsCount(), matrix.getColumnsCount());
 
         for (int i = 0; i < getRowsCount(); i++) {
             rows[i].subVector(matrix.getRow(i));
@@ -222,24 +230,25 @@ public class Matrix {
     }
 
     public static Matrix multiplication(Matrix matrix1, Matrix matrix2) {
-        NotAllowedMatrixSizeException(matrix1.getColumnsCount(), matrix2.getRowsCount());
+        MatrixException.notAllowedMatrixSizeException(matrix1.getColumnsCount(), matrix2.getRowsCount());
 
         int rowsCount = matrix1.getRowsCount();
         int columnsCount = matrix2.getColumnsCount();
+
         Matrix result = new Matrix(rowsCount, columnsCount);
+        Vector row = new Vector(columnsCount);
 
         for (int i = 0; i < rowsCount; i++) {
-            Vector row = new Vector(columnsCount);
-            result.setRow(i, row);
             for (int j = 0; j < columnsCount; j++) {
-                row.setComponent(j, multiplicationScalar(matrix1.getRow(i), matrix2.getColumn(j)));
+                row.setComponent(j, Vector.multiplicationScalar(matrix1.rows[i], matrix2.getColumn(j)));
             }
+            result.setRow(i, row);
         }
         return result;
     }
 
     public static Matrix addition(Matrix matrix1, Matrix matrix2) {
-        NotAllowedMatrixSizeException(matrix1.getRowsCount(), matrix2.getRowsCount(), matrix1.getColumnsCount(), matrix2.getColumnsCount());
+        MatrixException.notAllowedMatrixSizeException(matrix1.getRowsCount(), matrix2.getRowsCount(), matrix1.getColumnsCount(), matrix2.getColumnsCount());
 
         Matrix result = new Matrix(matrix1);
         result.addMatrix(matrix2);
@@ -247,7 +256,7 @@ public class Matrix {
     }
 
     public static Matrix subtraction(Matrix matrix1, Matrix matrix2) {
-        NotAllowedMatrixSizeException(matrix1.getRowsCount(), matrix2.getRowsCount(), matrix1.getColumnsCount(), matrix2.getColumnsCount());
+        MatrixException.notAllowedMatrixSizeException(matrix1.getRowsCount(), matrix2.getRowsCount(), matrix1.getColumnsCount(), matrix2.getColumnsCount());
 
         Matrix result = new Matrix(matrix1);
         result.subMatrix(matrix2);

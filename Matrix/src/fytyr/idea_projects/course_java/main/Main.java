@@ -3,8 +3,6 @@ package fytyr.idea_projects.course_java.main;
 import fytyr.idea_projects.course_java.matrix.Matrix;
 import fytyr.idea_projects.course_java.vector.Vector;
 
-import static fytyr.idea_projects.course_java.matrix.Matrix.*;
-
 public class Main {
     public static void main(String[] args) {
         Matrix matrix1 = new Matrix(3, 2);
@@ -64,14 +62,14 @@ public class Main {
         System.out.println("Matrix2 - matrix3 = " + matrix2);
 
         matrix3.transpose();
-        Matrix matrix8 = new Matrix(multiplication(matrix2, matrix3));
+        Matrix matrix8 = new Matrix(Matrix.multiplication(matrix2, matrix3));
         System.out.println("Matrix2 * matrix3 = " + matrix8);
 
         matrix2.transpose();
-        Matrix matrix9 = new Matrix(addition(matrix2, matrix3));
+        Matrix matrix9 = new Matrix(Matrix.addition(matrix2, matrix3));
         System.out.println("Matrix2 + matrix3 = " + matrix9);
 
-        Matrix matrix10 = new Matrix(subtraction(matrix2, matrix3));
+        Matrix matrix10 = new Matrix(Matrix.subtraction(matrix2, matrix3));
         System.out.println("Matrix2 - matrix3 = " + matrix10);
     }
 }

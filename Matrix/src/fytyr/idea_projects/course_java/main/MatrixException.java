@@ -7,19 +7,19 @@ public class MatrixException extends RuntimeException {
         super(message);
     }
 
-    public static void IllegalObjectSizeException(int argument) {
+    public static void illegalObjectSizeException(int argument) {
         if (argument <= 0) {
-            throw new IllegalArgumentException("Размер объекта равен 0");
+            throw new IllegalArgumentException("Длина массива равна 0");
         }
     }
 
-    public static void IndexOutOfMatrixBoundsException(int index, int length) {
+    public static void indexOutOfMatrixBoundsException(int index, int length) {
         if (index < 0 || index > length - 1) {
             throw new ArrayIndexOutOfBoundsException("Переданный индекс выходит за рамки диапозона");
         }
     }
 
-    public static void NotNullArgumentException(Vector[] rows) {
+    public static void notNullArgumentException(Vector[] rows) {
         if (rows == null) {
             throw new NullPointerException("Переданный массив равен null");
         }
@@ -30,37 +30,37 @@ public class MatrixException extends RuntimeException {
         }
     }
 
-    public static void NotNullArgumentException(Vector vector) {
+    public static void notNullArgumentException(Vector vector) {
         if (vector == null) {
             throw new NullPointerException("Переданный вектор равен null");
         }
     }
 
-    public static void NotNullArgumentException(double[][] array) {
+    public static void notNullArgumentException(double[][] array) {
         if (array == null) {
             throw new NullPointerException("Переданный массив равен null");
         }
     }
 
-    public static void NotAllowedVectorSizeException(int size1, int size2) {
+    public static void notAllowedVectorSizeException(int size1, int size2) {
         if (size1 != size2) {
             throw new IllegalArgumentException("Количество строк в матрице должно быть равно длине вектора");
         }
     }
 
-    public static void NotAllowedMatrixSizeException(int linesCount1, int linesCount2, int columnsCount1, int columnsCount2) {
+    public static void notAllowedMatrixSizeException(int linesCount1, int linesCount2, int columnsCount1, int columnsCount2) {
         if (linesCount1 != linesCount2 || columnsCount1 != columnsCount2) {
             throw new IllegalArgumentException("Матрицы должны быть одного размера");
         }
     }
 
-    public static void NotAllowedMatrixSizeException(int size1, int size2) {
+    public static void notAllowedMatrixSizeException(int size1, int size2) {
         if (size1 != size2) {
             throw new IllegalArgumentException("Количечство строк одной матрицы должно быть равно количеству колонок в другой");
         }
     }
 
-    public static void NotQuadraticMatrixException(int size1, int size2) {
+    public static void notQuadraticMatrixException(int size1, int size2) {
         if (size1 != size2) {
             throw new IllegalArgumentException("Матрица должна быть квадратной");
         }
