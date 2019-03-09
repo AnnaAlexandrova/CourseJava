@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FileReader {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         try (Scanner scanner = new Scanner(new FileInputStream("input.txt"))) {
             ArrayList<String> strings = new ArrayList<>();
 
@@ -17,6 +17,9 @@ public class FileReader {
             for (String s : strings) {
                 System.out.println(s);
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error occurred: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
