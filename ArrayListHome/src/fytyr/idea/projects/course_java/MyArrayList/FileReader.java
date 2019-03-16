@@ -19,7 +19,6 @@ public class FileReader {
             }
         } catch (FileNotFoundException e) {
             System.out.println("Error occurred: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 }
