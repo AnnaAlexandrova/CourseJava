@@ -9,7 +9,7 @@ public class SinglyLinkedList<T> {
 
     // Получения элемента по индексу
     private ListItem<T> getNode(int index) {
-        isOutOfBoundsException(index);
+        makeOutOfBoundsExceptionCheck(index);
 
         ListItem<T> p = head;
         for (int i = 0; i != index; i++) {
@@ -36,14 +36,14 @@ public class SinglyLinkedList<T> {
 
     // получение значения элемента по индексу
     public T getElement(int index) {
-        isOutOfBoundsException(index);
+        makeOutOfBoundsExceptionCheck(index);
 
         return getNode(index).getData();
     }
 
     // установка значения элемента по индексу
     public T setElement(int index, T data) {
-        isOutOfBoundsException(index);
+        makeOutOfBoundsExceptionCheck(index);
 
         T element = getNode(index).getData();
         getNode(index).setData(data);
@@ -60,7 +60,7 @@ public class SinglyLinkedList<T> {
 
     // удаление элемента по индексу
     public T removeNode(int index) {
-        isOutOfBoundsException(index);
+        makeOutOfBoundsExceptionCheck(index);
 
         if (index == 0) {
             return removeFirst();
@@ -92,7 +92,7 @@ public class SinglyLinkedList<T> {
 
     // вставка элемента по индексу
     public void addItem(int index, T data) {
-        isOutOfBoundsException(index);
+        makeOutOfBoundsExceptionCheck(index);
 
         if (index == 0) {
             addFirstItem(data);
@@ -142,7 +142,7 @@ public class SinglyLinkedList<T> {
         return result;
     }
 
-    private void isOutOfBoundsException(int index) {
+    private void makeOutOfBoundsExceptionCheck(int index) {
         if (index < 0 || index >= count) {
             throw new IndexOutOfBoundsException("В списке нет узла с переданным индексом");
         }
