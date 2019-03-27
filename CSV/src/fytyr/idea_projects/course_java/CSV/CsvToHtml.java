@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class CsvToHtml {
     public static void main(String[] args) {
         if (args.length != 2) {
-            System.out.println("Wrong way to files : need to specify ways to 2 files. 1) csv; 2) html");
+            System.out.println("Wrong path to files : need to specify paths to 2 files. 1) csv; 2) html");
             return;
         }
 
@@ -52,18 +52,18 @@ public class CsvToHtml {
                 }
             }
         } catch (FileNotFoundException e) {
-            System.out.println("File not found" + e.getMessage());
+            System.out.println("File not found " + e.getMessage());
         }
     }
 
     private static String replaceChar(char c) {
         switch (c) {
             case '<':
-                return "&lt";
+                return "&lt;";
             case '>':
-                return "&gt";
+                return "&gt;";
             case '&':
-                return "&amp";
+                return "&amp;";
         }
         return String.valueOf(c);
     }
