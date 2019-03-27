@@ -1,18 +1,25 @@
 package fytyr.idea_projects.course_java.CSV;
 
 import java.io.*;
+import java.util.Scanner;
 
 public class CsvToHtml {
     public static void main(String[] args) {
-        try (BufferedReader csvFile = new BufferedReader(new FileReader("Table.csv"));
-             PrintWriter printwriter = new PrintWriter("Table.html")) {
+        if (args.length != 2) {
+            System.out.println("Wrong way to files : need to specify ways to 2 files. 1) csv; 2) html");
+            return;
+        }
 
-            printwriter.print("<!DOCTYPE html><html><head><meta charset=\"utf-8\" /><title>HTML table</title></head><body><table border=\"1\">");
-            printwriter.print("<tr><td>");
+        try (Scanner csvFile = new Scanner(new FileInputStream(args[0]));
+             PrintWriter printWriter = new PrintWriter(args[1])) {
+
+            printWriter.print("<!DOCTYPE html><html><head><meta charset=\"utf-8\" /><title>HTML table</title></head><body><table border=\"1\">");
+            printWriter.print("<tr><td>");
 
             boolean isInQuotes = false;
-            String csvFileLine;
-            while ((csvFileLine = csvFile.readLine()) != null) {
+            while (csvFile.hasNext()) {
+                String csvFileLine = csvFile.nextLine();
+
                 for (int i = 0; i < csvFileLine.length(); i++) {
                     if ((csvFileLine.charAt(i) == '"' || isInQuotes) && (i < csvFileLine.length() - 1)) {
                         if (csvFileLine.charAt(i) == '"' && !isInQuotes) {
@@ -20,37 +27,36 @@ public class CsvToHtml {
                         }
                         isInQuotes = true;
                         if (csvFileLine.charAt(i) == '"' && csvFileLine.charAt(i + 1) == '"') {
-                            printwriter.print('"');
+                            printWriter.print('"');
                             i++;
-                        } else if (csvFileLine.charAt(i) == '"' && csvFileLine.charAt(i + 1) == ',') {
-                            printwriter.print("</td><td>");
-                            i++;
+                        } else if (csvFileLine.charAt(i) == '"') {
                             isInQuotes = false;
                         } else {
-                            printwriter.print(charReplace(csvFileLine.charAt(i)));
+                            printWriter.print(replaceChar(csvFileLine.charAt(i)));
                         }
                     } else if (csvFileLine.charAt(i) == ',') {
-                        printwriter.print("</td><td>");
+                        printWriter.print("</td><td>");
                     } else if (csvFileLine.charAt(i) == '"') {
-                        i++;
+                        isInQuotes = false;
                     } else {
-                        printwriter.print(charReplace(csvFileLine.charAt(i)));
+                        printWriter.print(replaceChar(csvFileLine.charAt(i)));
                     }
                 }
 
                 if (isInQuotes) {
-                    printwriter.print("<br/>");
+                    printWriter.print("<br/>");
+                } else if (!csvFile.hasNext()) {
+                    printWriter.print("</td></tr></table></body></html>");
                 } else {
-                    printwriter.print("</td></tr><tr><td>");
+                    printWriter.print("</td></tr><tr><td>");
                 }
             }
-            printwriter.print("</td></tr></table></body></html>");
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found" + e.getMessage());
         }
     }
 
-    private static String charReplace(char c) {
+    private static String replaceChar(char c) {
         switch (c) {
             case '<':
                 return "&lt";
