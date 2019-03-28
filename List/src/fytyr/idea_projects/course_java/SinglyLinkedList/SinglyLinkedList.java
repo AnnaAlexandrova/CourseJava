@@ -1,5 +1,7 @@
 package fytyr.idea_projects.course_java.SinglyLinkedList;
 
+import java.util.Objects;
+
 public class SinglyLinkedList<T> {
     private ListItem<T> head;
     private int count;
@@ -31,6 +33,9 @@ public class SinglyLinkedList<T> {
 
     // получение значени€ первого элемента
     public T getFirstElement() {
+        if (head == null) {
+            throw new NullPointerException("List is empty");
+        }
         return head.getData();
     }
 
@@ -45,13 +50,17 @@ public class SinglyLinkedList<T> {
     public T setElement(int index, T data) {
         makeOutOfBoundsExceptionCheck(index);
 
-        T element = getNode(index).getData();
-        getNode(index).setData(data);
+        ListItem<T> node = getNode(index);
+        T element = node.getData();
+        node.setData(data);
         return element;
     }
 
     // удаление первого элемента
     public T removeFirst() {
+        if (head == null) {
+            throw new NullPointerException("List is empty");
+        }
         T element = head.getData();
         head = head.getNext();
         count--;
@@ -65,13 +74,10 @@ public class SinglyLinkedList<T> {
         if (index == 0) {
             return removeFirst();
         }
-        ListItem<T> p = getNode(index);
-        T element = p.getData();
-        for (ListItem<T> prev = head; prev != null; prev = prev.getNext()) {
-            if (prev.getNext() == p) {
-                prev.setNext(p.getNext());
-            }
-        }
+        ListItem<T> p = getNode(index - 1);
+        T element = p.getNext().getData();
+
+        p.setNext(p.getNext().getNext());
         count--;
         return element;
     }
@@ -79,8 +85,15 @@ public class SinglyLinkedList<T> {
     // удаление узла по значению
     public boolean remove(T data) {
         boolean isDeleted = false;
+
+        if (Objects.equals(head.getData(), data)) {
+            head = head.getNext();
+            count--;
+            return true;
+        }
+
         for (ListItem<T> p = head, prev = null; p != null; prev = p, p = p.getNext()) {
-            if (p.getData() == data) {
+            if (Objects.equals(p.getData(), data)) {
                 prev.setNext(p.getNext());
                 count--;
                 isDeleted = true;
@@ -92,29 +105,33 @@ public class SinglyLinkedList<T> {
 
     // вставка элемента по индексу
     public void addItem(int index, T data) {
-        makeOutOfBoundsExceptionCheck(index);
+        if (index < 0 || index > count) {
+            throw new IndexOutOfBoundsException("»ндекс не может быть меньше 0 или больше длины списка более чем на 1");
+        }
 
         if (index == 0) {
             addFirstItem(data);
         } else {
             ListItem<T> newListItem = new ListItem<>(data);
-            ListItem<T> p = getNode(index);
-            for (ListItem<T> prev = head; prev != null; prev = prev.getNext()) {
-                if (prev.getNext() == p) {
-                    newListItem.setNext(p);
-                    prev.setNext(newListItem);
-                    count++;
-                    break;
-                }
-            }
+            ListItem<T> p = getNode(index - 1);
+
+            newListItem.setNext(p.getNext());
+            p.setNext(newListItem);
+            count++;
         }
     }
 
-    public void print() {
+    @Override
+    public String toString() {
+        StringBuilder list = new StringBuilder();
+        list.append("{ ");
         for (ListItem<T> p = head; p != null; p = p.getNext()) {
-            System.out.print(p.getData() + " ");
+            list.append(p.getData()).append(", ");
         }
-        System.out.println();
+        int endIndex = list.lastIndexOf(", ");
+        list.deleteCharAt(endIndex);
+        list.append("}");
+        return list.toString();
     }
 
     // разворот списка
@@ -133,12 +150,17 @@ public class SinglyLinkedList<T> {
     //  опирование списка
     public SinglyLinkedList<T> copy() {
         SinglyLinkedList<T> result = new SinglyLinkedList<>();
-        result.head = head;
-        for (ListItem<T> p = head, q = result.head; p != null; p = p.getNext(), q = q.getNext()) {
-            q.setData(p.getData());
-            q.setNext(p.getNext());
-            result.count++;
+        if (head == null) {
+            return result;
         }
+        ListItem<T> node = new ListItem<>(getFirstElement());
+        result.head = node;
+        for (ListItem<T> p = head.getNext(); p != null; p = p.getNext()) {
+            ListItem<T> tmp = new ListItem<>(p.getData());
+            node.setNext(tmp);
+            node = node.getNext();
+        }
+        result.count = count;
         return result;
     }
 

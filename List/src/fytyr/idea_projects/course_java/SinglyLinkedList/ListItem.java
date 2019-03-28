@@ -1,11 +1,8 @@
 package fytyr.idea_projects.course_java.SinglyLinkedList;
 
-public class ListItem<T> {
+class ListItem<T> {
     private T data;
     private ListItem<T> next;
-
-    public ListItem() {
-    }
 
     ListItem(T data) {
         this.data = data;

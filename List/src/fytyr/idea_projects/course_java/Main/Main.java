@@ -11,6 +11,7 @@ public class Main {
         list.addFirstItem(9);
         list.addFirstItem(2);
         list.addFirstItem(6);
+        list.addFirstItem(null);
         list.addFirstItem(3);
         list.addFirstItem(7);
 
@@ -18,21 +19,21 @@ public class Main {
         System.out.println(list.getFirstElement());
         System.out.println(list.getElement(4));
 
-        System.out.println(list.setElement(2, 0));
+        System.out.println(list.setElement(3, 0));
         System.out.println(list.removeFirst());
 
         System.out.println(list.removeNode(3));
-        System.out.println(list.remove(15));
+        System.out.println(list.remove(null));
 
-        list.print();
-        list.addItem(1, 26);
-        list.addItem(0, 90);
-        list.print();
+        System.out.println(list);
+        list.addItem(6, 26);
+        list.addItem(3, 90);
+        System.out.println(list);
         list.reverse();
-        list.print();
+        System.out.println(list);
 
         SinglyLinkedList<Integer> copy = list.copy();
-        copy.print();
+        System.out.println(copy);
         System.out.println(copy.getSize());
     }
 }
