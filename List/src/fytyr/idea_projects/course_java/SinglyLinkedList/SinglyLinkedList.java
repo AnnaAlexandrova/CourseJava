@@ -84,23 +84,22 @@ public class SinglyLinkedList<T> {
 
     // удаление узла по значению
     public boolean remove(T data) {
-        boolean isDeleted = false;
-
+        if (head == null) {
+            return false;
+        }
         if (Objects.equals(head.getData(), data)) {
             head = head.getNext();
             count--;
             return true;
         }
-
         for (ListItem<T> p = head, prev = null; p != null; prev = p, p = p.getNext()) {
             if (Objects.equals(p.getData(), data)) {
                 prev.setNext(p.getNext());
                 count--;
-                isDeleted = true;
-                break;
+                return true;
             }
         }
-        return isDeleted;
+        return false;
     }
 
     // вставка элемента по индексу
