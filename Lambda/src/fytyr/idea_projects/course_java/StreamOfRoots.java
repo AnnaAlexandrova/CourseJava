@@ -10,7 +10,9 @@ public class StreamOfRoots {
 
         int count = scanner.nextInt();
 
-        DoubleStream roots = DoubleStream.iterate(0, x -> x + 1).map(Math::sqrt);
-        roots.limit(count).forEach(System.out::println);
+        DoubleStream roots = DoubleStream.iterate(0, x -> x + 1)
+                .map(Math::sqrt);
+        roots.limit(count)
+                .forEach(System.out::println);
     }
 }
