@@ -28,8 +28,7 @@ public class Main {
         avgAge.ifPresent(System.out::println);
 
         Map<String, Double> personsByName = people.stream()
-                .collect(Collectors.groupingBy(Person::getName,
-                        Collectors.averagingInt(Person::getAge)));
+                .collect(Collectors.groupingBy(Person::getName, Collectors.averagingInt(Person::getAge)));
         personsByName.forEach((name, age) ->
                 System.out.printf("name %s: %.2f%n", name, age));
 
