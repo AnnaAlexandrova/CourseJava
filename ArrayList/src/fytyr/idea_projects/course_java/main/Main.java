@@ -26,7 +26,7 @@ public class Main {
         list1.clear();
 
         list1.addAll(list2);
-        list1.set(3, "123");
+        System.out.println(list1.set(3, "123"));
         System.out.println(list1.get(3));
 
         for (Iterator<String> i = list2.iterator(); i.hasNext(); ) {
@@ -42,11 +42,11 @@ public class Main {
         System.out.println(list2.remove("ABC"));
         System.out.println(list2 + " " + list2.size());
 
-        System.out.println(list2.indexOf("ABC"));
+        System.out.println(list2.indexOf(null));
         System.out.println(list2.lastIndexOf("ABC"));
 
-        String[] array1 = list1.toArray(new String[0]);
-        for (String s : array1) {
+        Object[] array1 = list1.toArray(new Object[30]);
+        for (Object s : array1) {
             System.out.print(s + " ");
         }
         System.out.println();
@@ -66,7 +66,11 @@ public class Main {
         list2.trimToSize();
         System.out.println(list2);
 
-        System.out.println(list1.retainAll(list3));
+        ArrayList<String> list4 = new ArrayList<>();
+        System.out.println(list4);
+        list4.add("345");
+        list4.add("ABC");
+        System.out.println(list1.retainAll(list4));
         System.out.println(list1 + " " + list1.size());
     }
 }
