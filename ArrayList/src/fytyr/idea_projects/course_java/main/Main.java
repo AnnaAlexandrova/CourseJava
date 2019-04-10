@@ -9,6 +9,7 @@ public class Main {
         ArrayList<String> list1 = new ArrayList<>();
         list1.add("ABC");
         list1.add("QWERTY");
+        list1.add(null);
         list1.add("plm");
         list1.add(1, "wsx");
         list1.add("cvb");
@@ -67,9 +68,9 @@ public class Main {
         System.out.println(list2);
 
         ArrayList<String> list4 = new ArrayList<>();
-        System.out.println(list4);
-        list4.add("345");
-        list4.add("ABC");
+        list4.add("r");
+        list4.add("d");
+        list4.add("cvb");
         System.out.println(list1.retainAll(list4));
         System.out.println(list1 + " " + list1.size());
     }
