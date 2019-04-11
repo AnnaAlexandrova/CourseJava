@@ -141,6 +141,7 @@ public class ArrayList<T> implements List<T> {
         if (size + c.size() >= items.length) {
             ensureCapacity(size + c.size());
         }
+
         int i = size;
         for (T e : c) {
             items[i] = e;
@@ -161,12 +162,12 @@ public class ArrayList<T> implements List<T> {
             return false;
         }
 
-        if (size + c.size() >= items.length) {
-            ensureCapacity(size + c.size());
-        }
+        ensureCapacity(size + c.size());
+
         if (index < size) {
             System.arraycopy(items, index, items, index + c.size(), size - index);
         }
+
         int i = index;
         for (T e : c) {
             items[i] = e;
@@ -183,8 +184,10 @@ public class ArrayList<T> implements List<T> {
         if (c.size() == 0) {
             return false;
         }
+
         boolean isDeleted = false;
         int i = 0;
+
         while (i < size) {
             if (c.contains(items[i])) {
                 remove(i);
@@ -200,9 +203,13 @@ public class ArrayList<T> implements List<T> {
     public boolean retainAll(Collection<?> c) {
         makeNullPointerExceptionCheck(c);
         if (c.size() == 0) {
+            if (size == 0) {
+                return false;
+            }
             clear();
             return true;
         }
+
         int currentSize = size;
         int i = 0;
         while (i < size) {
@@ -291,10 +298,15 @@ public class ArrayList<T> implements List<T> {
     public String toString() {
         StringBuilder string = new StringBuilder();
         string.append("{ ");
-            for (String s : toArray(new String[size])) {
-                string.append(s).append(" ");
 
+        int i = 0;
+        for (T e : items) {
+            if (i == size) {
+                break;
             }
+            string.append(e).append(" ");
+            i++;
+        }
         string.append("}");
         return string.toString();
     }
