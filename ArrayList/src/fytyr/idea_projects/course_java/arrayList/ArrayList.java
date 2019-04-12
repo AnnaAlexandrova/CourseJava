@@ -138,9 +138,7 @@ public class ArrayList<T> implements List<T> {
         if (c.size() == 0) {
             return false;
         }
-        if (size + c.size() >= items.length) {
-            ensureCapacity(size + c.size());
-        }
+        ensureCapacity(size + c.size());
 
         int i = size;
         for (T e : c) {
@@ -161,13 +159,11 @@ public class ArrayList<T> implements List<T> {
         if (c.size() == 0) {
             return false;
         }
-
         ensureCapacity(size + c.size());
 
         if (index < size) {
             System.arraycopy(items, index, items, index + c.size(), size - index);
         }
-
         int i = index;
         for (T e : c) {
             items[i] = e;
