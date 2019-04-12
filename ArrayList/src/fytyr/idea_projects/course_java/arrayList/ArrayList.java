@@ -293,14 +293,12 @@ public class ArrayList<T> implements List<T> {
 
     public String toString() {
         StringJoiner string = new StringJoiner(", ", "[", "]");
-        int i = 0;
-        while (i < size) {
+        for (int i = 0; i < size; i++) {
             if (items[i] != null) {
                 string.add(items[i].toString());
             } else {
                 string.add(null);
             }
-            i++;
         }
         return string.toString();
     }
