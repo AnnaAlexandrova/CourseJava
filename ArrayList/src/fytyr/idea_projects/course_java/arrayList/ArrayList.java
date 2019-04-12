@@ -292,18 +292,16 @@ public class ArrayList<T> implements List<T> {
     }
 
     public String toString() {
-        StringBuilder string = new StringBuilder();
-        string.append("{ ");
-
+        StringJoiner string = new StringJoiner(", ", "[", "]");
         int i = 0;
-        for (T e : items) {
-            if (i == size) {
-                break;
+        while (i < size) {
+            if (items[i] != null) {
+                string.add(items[i].toString());
+            } else {
+                string.add(null);
             }
-            string.append(e).append(" ");
             i++;
         }
-        string.append("}");
         return string.toString();
     }
 
