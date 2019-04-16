@@ -32,13 +32,15 @@ public class Main {
 
         System.out.println(table1);
         System.out.println(table2);
-        System.out.println(table1.containsAll(table2));
+        System.out.println("t1 contains t2" + table1.containsAll(table2));
 
         System.out.println(table2.addAll(table1));
-        System.out.println(table2);
+        System.out.println("t2 + t1" + table2);
 
-        System.out.println(table2.removeAll(table1));
         System.out.println(table2);
+        System.out.println(table1);
+        System.out.println(table2.removeAll(table1));
+        System.out.println("t2 - t1" + table2);
 
         HashTable<String> table3 = new HashTable<>(10);
         table3.add("6");
