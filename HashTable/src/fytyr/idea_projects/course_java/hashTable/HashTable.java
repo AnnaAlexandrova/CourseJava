@@ -115,11 +115,6 @@ public class HashTable<T> implements Collection<T> {
 
     @Override
     public boolean add(T t) {
-        if (size >= table.length * 0.75) {
-            HashTable<T> newTable = new HashTable<>(size * 2);
-            newTable.addAll(this);
-            table = newTable.table;
-        }
         int index = getIndex(t);
         if (table[index] == null) {
             table[index] = new ArrayList<>();
