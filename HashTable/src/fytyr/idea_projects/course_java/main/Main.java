@@ -5,7 +5,7 @@ import fytyr.idea_projects.course_java.hashTable.HashTable;
 public class Main {
     public static void main(String[] args) {
         HashTable<String> table1 = new HashTable<>();
-        HashTable<String> table2 = new HashTable<>(10);
+        HashTable<String> table2 = new HashTable<>(1);
         table1.add("qwerty");
         table1.add("ty");
         table1.add("w");
@@ -35,19 +35,16 @@ public class Main {
         System.out.println("t1 contains t2" + table1.containsAll(table2));
 
         System.out.println(table2.addAll(table1));
-        System.out.println("t2 + t1" + table2);
-
-        System.out.println(table2);
-        System.out.println(table1);
-        System.out.println(table2.removeAll(table1));
-        System.out.println("t2 - t1" + table2);
+        System.out.println("t2 + t1 " + table2);
+        System.out.println(table2.size());
 
         HashTable<String> table3 = new HashTable<>(10);
         table3.add("6");
         table3.add("m");
         table3.add("123");
-        System.out.println(table1.removeAll(table3));
-        System.out.println(table1);
+        table3.add("w");
+        System.out.println(table2.removeAll(table3));
+        System.out.println(table2);
 
         System.out.println(table1.retainAll(table2));
         System.out.println(table1);

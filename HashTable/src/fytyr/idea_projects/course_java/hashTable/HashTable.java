@@ -57,6 +57,12 @@ public class HashTable<T> implements Collection<T> {
         return index;
     }
 
+    private void increaseCapacity(int length) {
+        HashTable<T> newTable = new HashTable<>(length);
+        newTable.addAll(this);
+        table = newTable.table;
+    }
+
     @Override
     public int size() {
         return size;
@@ -115,8 +121,8 @@ public class HashTable<T> implements Collection<T> {
 
     @Override
     public boolean add(T t) {
-        if (size >= table.length) {
-            table = Arrays.copyOf(table, size * 2);
+        if (size >= table.length * 0.75) {
+            increaseCapacity(size * 2);
         }
         int index = getIndex(t);
         if (table[index] == null) {
@@ -159,9 +165,6 @@ public class HashTable<T> implements Collection<T> {
         if (c.size() == 0) {
             return false;
         }
-        if (size + c.size() > table.length) {
-            table = Arrays.copyOf(table, size + c.size());
-        }
         for (T e : c) {
             add(e);
         }
@@ -176,8 +179,10 @@ public class HashTable<T> implements Collection<T> {
         }
         boolean isDeleted = false;
         for (Object e : c) {
-            if (remove(e)) {
-                isDeleted = true;
+            while (contains(e)) {
+                if (remove(e)) {
+                    isDeleted = true;
+                }
             }
         }
         return isDeleted;
