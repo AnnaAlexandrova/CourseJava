@@ -6,33 +6,53 @@ import java.util.function.Consumer;
 public class Tree<T> {
     private TreeNode<T> root;
     private int size;
+    private Comparator<T> comparator;
 
     public Tree() {
         size = 0;
     }
 
-    public void setRoot(TreeNode<T> root) {
-        this.root = root;
+    public Tree(Comparator<T> comparator) {
+        if (comparator == null) {
+            throw new NullPointerException("Компаратор равен null");
+        }
+        this.comparator = comparator;
     }
 
-    public TreeNode<T> getRoot() {
-        return root;
+    public Tree(Collection<T> collection) {
+        if (collection == null) {
+            throw new NullPointerException("Переданная коллекци пуста");
+        }
+        for (T e : collection) {
+            add(e);
+        }
     }
 
     public int getSize() {
         return size;
     }
 
-    public TreeNode<T> findNode(T data) {
+    private int compare(T data1, T data2) {
+        if (comparator != null) {
+            return comparator.compare(data1, data2);
+        } else {
+            //noinspection unchecked
+            Comparable<T> c = (Comparable<T>) data1;
+            return c.compareTo(data2);
+        }
+    }
+
+    public boolean contains(T data) {
         TreeNode<T> currentRoot = root;
         while (currentRoot != null) {
-            if (Objects.equals(data, currentRoot.getData())) {
-                return currentRoot;
+            int compare = compare(currentRoot.getData(), data);
+            if (compare == 0) {
+                return true;
             }
-            currentRoot = currentRoot.getData().hashCode() > data.hashCode()
+            currentRoot = compare > 0
                     ? currentRoot.getLeftChild() : currentRoot.getRightChild();
         }
-        return null;
+        return false;
     }
 
     public void add(T data) {
@@ -40,18 +60,18 @@ public class Tree<T> {
         TreeNode<T> currentParent = null;
         while (currentRoot != null) {
             currentParent = currentRoot;
-            currentRoot = currentRoot.getData().hashCode() > data.hashCode()
+            currentRoot = compare(currentRoot.getData(), data) > 0
                     ? currentRoot.getLeftChild() : currentRoot.getRightChild();
         }
         currentRoot = new TreeNode<>(data);
         if (currentParent != null) {
-            if (currentParent.getData().hashCode() > data.hashCode()) {
+            if (compare(currentParent.getData(), data) > 0) {
                 currentParent.setLeftChild(currentRoot);
             } else {
                 currentParent.setRightChild(currentRoot);
             }
         } else {
-            setRoot(currentRoot);
+            this.root = currentRoot;
         }
         size++;
     }
@@ -60,7 +80,7 @@ public class Tree<T> {
         TreeNode<T> currentRoot = root;
         TreeNode<T> currentParent = null;
         while (currentRoot != null) {
-            if (Objects.equals(currentRoot.getData(), data)) {
+            if (compare(currentRoot.getData(), data) == 0) {
                 if (currentRoot.getRightChild() == null && currentRoot.getLeftChild() == null) {
                     removeIfNoChildren(currentRoot, currentParent);
 
@@ -77,7 +97,7 @@ public class Tree<T> {
                 return true;
             }
             currentParent = currentRoot;
-            currentRoot = currentRoot.getData().hashCode() > data.hashCode()
+            currentRoot = compare(currentRoot.getData(), data) > 0
                     ? currentRoot.getLeftChild() : currentRoot.getRightChild();
         }
         return false;
@@ -99,7 +119,7 @@ public class Tree<T> {
                 parent.setRightChild(child);
             }
         } else {
-            setRoot(child);
+            this.root = child;
         }
     }
 
@@ -112,19 +132,20 @@ public class Tree<T> {
         }
         minLeftParent.setLeftChild(minLeft.getRightChild());
         if (parent != null) {
-            if (parent.getData().hashCode() > minLeft.getData().hashCode()) {
+            if (compare(parent.getData(), minLeft.getData()) > 0) {
                 parent.setLeftChild(minLeft);
             } else {
                 parent.setRightChild(minLeft);
             }
         } else {
-            setRoot(minLeft);
+            this.root = minLeft;
         }
         minLeft.setLeftChild(nodeToRemove.getLeftChild());
         minLeft.setRightChild(nodeToRemove.getRightChild());
     }
 
     public void traverseInWidth(Consumer<T> consumer) {
+        makeTreeIsNotEmptyExceptionCheck();
         Queue<TreeNode<T>> queue = new LinkedList<>();
         queue.add(root);
         while (!queue.isEmpty()) {
@@ -139,26 +160,38 @@ public class Tree<T> {
         }
     }
 
-    public void traverseInDepthRecursion(TreeNode<T> node, Consumer<T> consumer) {
+    public void traverseInDepthRecursion(Consumer<T> consumer) {
+        makeTreeIsNotEmptyExceptionCheck();
+        visit(root, consumer);
+    }
+
+    private void visit(TreeNode<T> node, Consumer<T> consumer) {
         if (node != null) {
-            traverseInDepthRecursion(node.getLeftChild(), consumer);
+            visit(node.getLeftChild(), consumer);
             consumer.accept(node.getData());
-            traverseInDepthRecursion(node.getRightChild(), consumer);
+            visit(node.getRightChild(), consumer);
         }
     }
 
     public void traverseInDepth(Consumer<T> consumer) {
-        Stack<TreeNode<T>> stack = new Stack<>();
-        stack.add(root);
-        while (!stack.isEmpty()) {
-            TreeNode<T> node = stack.pop();
+        makeTreeIsNotEmptyExceptionCheck();
+        Deque<TreeNode<T>> deque = new LinkedList<>();
+        deque.addLast(root);
+        while (!deque.isEmpty()) {
+            TreeNode<T> node = deque.removeLast();
             consumer.accept(node.getData());
             if (node.getRightChild() != null) {
-                stack.add(node.getRightChild());
+                deque.addLast(node.getRightChild());
             }
             if (node.getLeftChild() != null) {
-                stack.add(node.getLeftChild());
+                deque.addLast(node.getLeftChild());
             }
+        }
+    }
+
+    private void makeTreeIsNotEmptyExceptionCheck() {
+        if (size == 0) {
+            throw new NullPointerException("Дерево не содержит ни одного элемента");
         }
     }
 }

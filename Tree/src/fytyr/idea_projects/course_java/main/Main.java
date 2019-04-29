@@ -18,11 +18,11 @@ public class Main {
         tree.add(13);
 
         System.out.println("size: " + tree.getSize());
-        System.out.println(tree.findNode(10));
+        System.out.println(tree.contains(10));
 
         Consumer<Integer> consumer = System.out::println;
         tree.traverseInWidth(consumer);
-        tree.traverseInDepthRecursion(tree.getRoot(), consumer);
+        tree.traverseInDepthRecursion(consumer);
         tree.traverseInDepth(consumer);
 
         System.out.println(tree.remove(6));
