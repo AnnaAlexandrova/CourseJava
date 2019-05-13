@@ -1,0 +1,28 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Course_Java:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Course_Java_jar</output-path>
+    <root id="archive" name="Course_Java.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/Temperature/src/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="ArrayListHome" />
+      <element id="module-output" name="ArrayList" />
+      <element id="module-output" name="Graph" />
+      <element id="module-output" name="Lambda" />
+      <element id="module-output" name="List" />
+      <element id="module-output" name="CSV" />
+      <element id="module-output" name="HashTable" />
+      <element id="module-output" name="Multithreading" />
+      <element id="module-output" name="Matrix" />
+      <element id="module-output" name="Vector" />
+      <element id="module-output" name="ProducerConsumer" />
+      <element id="module-output" name="InputOutputStreams" />
+      <element id="module-output" name="Range" />
+      <element id="module-output" name="Serialization" />
+      <element id="module-output" name="Temperature" />
+      <element id="module-output" name="Reflrction" />
+      <element id="module-output" name="Shapes" />
+      <element id="module-output" name="Tree" />
+    </root>
+  </artifact>
+</component>
