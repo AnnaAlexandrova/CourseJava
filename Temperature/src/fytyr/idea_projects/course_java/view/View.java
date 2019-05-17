@@ -1,56 +1,72 @@
 package fytyr.idea_projects.course_java.view;
 
+import fytyr.idea_projects.course_java.controller.Controller;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class View extends JFrame {
+public class View {
+    private JFrame frame;
     private JTextField textFieldIn;
     private JTextField textFieldOut;
     private JComboBox comboIn;
     private JComboBox comboOut;
     private JButton button;
+    private Controller controller;
 
     public View() {
-        super("Перевод температуры");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        SwingUtilities.invokeLater(() -> {
+            frame = new JFrame("Перевод температуры");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        textFieldIn = new JTextField("00.00", 6);
-        textFieldIn.setHorizontalAlignment(JTextField.CENTER);
+            int width = 700;
+            int height = 200;
+            frame.setSize(width, height);
+            frame.setMinimumSize(new Dimension(width, height));
 
-        textFieldOut = new JTextField("00.00", 6);
-        textFieldOut.setHorizontalAlignment(JTextField.CENTER);
-        textFieldOut.setEnabled(false);
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            int x = (screenSize.width - width) / 2;
+            int y = (screenSize.height - height) / 2;
 
-        final String[] elements = new String[]{"Фаренгейт", "Цельсий", "Кельвин"};
-        comboIn = new JComboBox(elements);
-        comboOut = new JComboBox(elements);
+            frame.setBounds(x, y, width, height);
+            frame.setVisible(true);
 
-        button = new JButton("Перевести");
-        button.setBorderPainted(false);
+            textFieldIn = new JTextField("00.00", 6);
+            textFieldIn.setHorizontalAlignment(JTextField.CENTER);
 
-        JPanel panelLeft = new JPanel(new BorderLayout());
-        panelLeft.setBorder(new EmptyBorder(60, 30, 60, 30));
-        add(panelLeft, BorderLayout.LINE_START);
+            textFieldOut = new JTextField("00.00", 6);
+            textFieldOut.setHorizontalAlignment(JTextField.CENTER);
+            textFieldOut.setEnabled(false);
 
-        panelLeft.add(textFieldIn, BorderLayout.LINE_START);
-        panelLeft.add(comboIn);
+            String[] elements = new String[]{"Фаренгейт", "Цельсий", "Кельвин",};
+            comboIn = new JComboBox<>(elements);
+            comboOut = new JComboBox<>(elements);
 
-        JPanel panelCenter = new JPanel(new BorderLayout());
-        panelCenter.setBorder(new EmptyBorder(60, 30, 60, 30));
+            button = new JButton("Перевести");
+            button.setBorderPainted(false);
+            button.addActionListener(e -> controller.initModel());
 
-        add(panelCenter, BorderLayout.CENTER);
-        panelCenter.add(button);
+            JPanel panelLeft = new JPanel(new BorderLayout());
+            panelLeft.setBorder(new EmptyBorder(60, 30, 60, 30));
+            frame.add(panelLeft, BorderLayout.LINE_START);
 
-        JPanel panelRight = new JPanel(new BorderLayout());
-        panelRight.setBorder(new EmptyBorder(60, 30, 60, 30));
-        add(panelRight, BorderLayout.LINE_END);
+            panelLeft.add(textFieldIn, BorderLayout.LINE_START);
+            panelLeft.add(comboIn);
 
-        panelRight.add(textFieldOut, BorderLayout.LINE_START);
-        panelRight.add(comboOut);
+            JPanel panelCenter = new JPanel(new BorderLayout());
+            panelCenter.setBorder(new EmptyBorder(60, 30, 60, 30));
 
-        setSize(700, 200);
-        setVisible(true);
+            frame.add(panelCenter, BorderLayout.CENTER);
+            panelCenter.add(button);
+
+            JPanel panelRight = new JPanel(new BorderLayout());
+            panelRight.setBorder(new EmptyBorder(60, 30, 60, 30));
+            frame.add(panelRight, BorderLayout.LINE_END);
+
+            panelRight.add(textFieldOut, BorderLayout.LINE_START);
+            panelRight.add(comboOut);
+        });
     }
 
     public JTextField getTextFieldIn() {
@@ -69,12 +85,12 @@ public class View extends JFrame {
         return comboOut;
     }
 
-    public JButton getButton() {
-        return button;
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 
     public void showWarningMessage() {
-        JOptionPane.showMessageDialog(this,
+        JOptionPane.showMessageDialog(frame,
                 "Введенные данные должны быть в числовом формате",
                 "Warning", JOptionPane.WARNING_MESSAGE);
     }

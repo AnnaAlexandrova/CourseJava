@@ -16,7 +16,7 @@ public class Controller {
         view.getTextFieldOut().setText(Double.toString(Math.round(model.transferTemperature())));
     }
 
-    private void initModel() {
+    public void initModel() {
         try {
             model.setTemperatureIn(Double.parseDouble(view.getTextFieldIn().getText()));
         } catch (NumberFormatException e) {
@@ -25,9 +25,5 @@ public class Controller {
         model.setScaleIn(view.getComboIn().getSelectedIndex());
         model.setScaleOut(view.getComboOut().getSelectedIndex());
         initView();
-    }
-
-    public void initController() {
-        view.getButton().addActionListener(e -> initModel());
     }
 }
