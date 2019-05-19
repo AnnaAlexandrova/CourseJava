@@ -36,7 +36,9 @@ public class Tree<T> {
         if (comparator != null) {
             return comparator.compare(data1, data2);
         }
-        if (data1 == null || data2 == null) {
+        if (data1 == null && data2 == null) {
+            return 0;
+        } else if (data1 == null || data2 == null) {
             return (data1 == null) ? -1 : 1;
         }
         //noinspection unchecked
@@ -91,11 +93,11 @@ public class Tree<T> {
         int compareResult = compare(currentRoot.getData(), data);
 
         while (compareResult != 0) {
+            currentParent = currentRoot;
             currentRoot = compareResult > 0 ? currentRoot.getLeftChild() : currentRoot.getRightChild();
             if (currentRoot == null) {
                 return false;
             }
-            currentParent = currentRoot;
             compareResult = compare(currentRoot.getData(), data);
         }
 
@@ -141,12 +143,15 @@ public class Tree<T> {
         TreeNode<T> minLeft = nodeToRemove.getRightChild().getLeftChild();
         TreeNode<T> minLeftParent = nodeToRemove.getRightChild();
 
-        while (minLeft.getLeftChild() != null) {
-            minLeftParent = minLeft;
-            minLeft = minLeft.getLeftChild();
+        if (minLeft == null) {
+            minLeft = minLeftParent;
+        } else {
+            while (minLeft.getLeftChild() != null) {
+                minLeftParent = minLeft;
+                minLeft = minLeft.getLeftChild();
+            }
+            minLeftParent.setLeftChild(minLeft.getRightChild());
         }
-
-        minLeftParent.setLeftChild(minLeft.getRightChild());
 
         if (parent != null) {
             if (compare(parent.getData(), minLeft.getData()) > 0) {
