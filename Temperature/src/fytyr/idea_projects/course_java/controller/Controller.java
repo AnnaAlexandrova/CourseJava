@@ -13,7 +13,7 @@ public class Controller {
     }
 
     private void initView() {
-        view.getTextFieldOut().setText(Double.toString(Math.round(model.transferTemperature())));
+        view.getTextFieldOut().setText(Double.toString(Math.round(model.convertTemperature())));
     }
 
     public void initModel() {

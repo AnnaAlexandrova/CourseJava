@@ -22,11 +22,11 @@ public class Model {
         this.scaleOut = scaleOut;
     }
 
-    public double transferTemperature() {
+    public double convertTemperature() {
         if (scaleIn == scaleOut) {
             return temperatureIn;
         }
-        double degreeToCelsius = scales[scaleIn].convertTo(temperatureIn);
-        return scales[scaleOut].convertFrom(degreeToCelsius);
+        double degreeToCelsius = scales[scaleIn].convertToCelsius(temperatureIn);
+        return scales[scaleOut].convertFromCelsius(degreeToCelsius);
     }
 }
