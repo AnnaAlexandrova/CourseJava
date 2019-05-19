@@ -18,6 +18,7 @@ public class Graph {
         if (begin < 0 && end >= size) {
             throw new IndexOutOfBoundsException("Ребро с переданными вершинами не входит в граф");
         }
+
         if (begin == end) {
             matrix[begin][end] = 0;
         } else {
@@ -32,15 +33,22 @@ public class Graph {
         }
         boolean[] visited = new boolean[size];
         Queue<Integer> queue = new LinkedList<>();
+
         for (int i = 0; i < size; i++) {
+            if (visited[i]) {
+                continue;
+            }
             queue.add(i);
+
             while (!queue.isEmpty()) {
                 int currentVertex = queue.remove();
                 if (visited[currentVertex]) {
                     continue;
                 }
+
                 visited[currentVertex] = true;
                 consumer.accept(currentVertex);
+
                 for (int j = 0; j < size; j++) {
                     if (matrix[currentVertex][j] == 0) {
                         continue;
@@ -57,22 +65,59 @@ public class Graph {
         }
         boolean[] visited = new boolean[size];
         Deque<Integer> deque = new LinkedList<>();
+
         for (int i = 0; i < size; i++) {
+            if (visited[i]) {
+                continue;
+            }
             deque.addLast(i);
+
             while (!deque.isEmpty()) {
                 int currentVertex = deque.removeLast();
                 if (visited[currentVertex]) {
                     continue;
                 }
+
                 visited[currentVertex] = true;
                 consumer.accept(currentVertex);
-                for (int j = 0; j < size; j++) {
+
+                for (int j = size - 1; j >= 0; j--) {
                     if (matrix[j][currentVertex] == 0) {
                         continue;
                     }
                     deque.addLast(j);
                 }
             }
+        }
+    }
+
+    public void traverseInDepthRecursion(Consumer<Integer> consumer) {
+        if (size == 0) {
+            return;
+        }
+        boolean[] isVisited = new boolean[size];
+
+        for (int i = 0; i < size; i++) {
+            if (isVisited[i]) {
+                continue;
+            }
+            visited(i, isVisited, consumer);
+        }
+    }
+
+    private void visited(int currentVertex, boolean[] isVisited, Consumer<Integer> consumer) {
+        if (isVisited[currentVertex]) {
+            return;
+        }
+
+        isVisited[currentVertex] = true;
+        consumer.accept(currentVertex);
+
+        for (int i = 0; i < size; i++) {
+            if (matrix[i][currentVertex] == 0) {
+                continue;
+            }
+            visited(i, isVisited, consumer);
         }
     }
 

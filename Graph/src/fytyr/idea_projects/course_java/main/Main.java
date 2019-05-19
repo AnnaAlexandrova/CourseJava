@@ -21,5 +21,7 @@ public class Main {
         graph.traverseInBreadth(consumer);
         System.out.println();
         graph.traverseInDepth(consumer);
+        System.out.println();
+        graph.traverseInDepthRecursion(consumer);
     }
 }
