@@ -101,11 +101,11 @@ public class Graph {
             if (isVisited[i]) {
                 continue;
             }
-            visited(i, isVisited, consumer);
+            visit(i, isVisited, consumer);
         }
     }
 
-    private void visited(int currentVertex, boolean[] isVisited, Consumer<Integer> consumer) {
+    private void visit(int currentVertex, boolean[] isVisited, Consumer<Integer> consumer) {
         if (isVisited[currentVertex]) {
             return;
         }
@@ -117,7 +117,7 @@ public class Graph {
             if (matrix[i][currentVertex] == 0) {
                 continue;
             }
-            visited(i, isVisited, consumer);
+            visit(i, isVisited, consumer);
         }
     }
 
