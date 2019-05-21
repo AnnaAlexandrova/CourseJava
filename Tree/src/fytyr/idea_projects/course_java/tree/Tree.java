@@ -150,7 +150,9 @@ public class Tree<T> {
                 minLeftParent = minLeft;
                 minLeft = minLeft.getLeftChild();
             }
+            
             minLeftParent.setLeftChild(minLeft.getRightChild());
+            minLeft.setRightChild(nodeToRemove.getRightChild());
         }
 
         if (parent != null) {
@@ -164,7 +166,6 @@ public class Tree<T> {
         }
 
         minLeft.setLeftChild(nodeToRemove.getLeftChild());
-        minLeft.setRightChild(nodeToRemove.getRightChild());
     }
 
     public void traverseInWidth(Consumer<T> consumer) {
